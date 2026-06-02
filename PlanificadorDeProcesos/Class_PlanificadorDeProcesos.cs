@@ -5,9 +5,11 @@ namespace PlanificadorDeProcesos
 {
     internal class Class_PlanificadorDeProcesos
     {
-        public BindingList<Proceso> ProcesosEnEspera { get; set; } = new BindingList<Proceso>();
+        public BindingList<Proceso> ProcesosListos { get; set; } = new BindingList<Proceso>();
         public BindingList<Proceso> ProcesosBloqueados { get; set; } = new BindingList<Proceso>();
         public BindingList<Proceso> ProcesosTerminados { get; set; } = new BindingList<Proceso>();
+
+        public Proceso ProcesoEnCPU = null;
 
         public Dictionary<int, string> ComboValues = new Dictionary<int, string>()
         {
@@ -30,10 +32,12 @@ namespace PlanificadorDeProcesos
         };
 
         private Random random = new Random();
-        private int contadorId = 1;
-        public List<Proceso> GenerarLote()
+        private int contadorId;
+        public void GenerarLote()
         {
-            List<Proceso> nuevosProcesos = new List<Proceso>();
+            //List<Proceso> nuevosProcesos = new List<Proceso>();
+            ProcesosListos.Clear();
+            contadorId = 1;
 
             for (int i = 0; i < FormData.np_Cantidad; i++)
             {
@@ -48,19 +52,19 @@ namespace PlanificadorDeProcesos
                 // Inicializamos los valores de ejecución
                 p.TiempoRestanteCPU = p.BurstTime;
                 p.TiempoRestanteIO = p.IOBurstTime;
-                p.Estado = Estado.En_Espera;
+                p.Estado = Estado.Listo;
                 p.YaHizoIO = false;
 
-                nuevosProcesos.Add(p);
+                ProcesosListos.Add(p);
             }
 
-            return nuevosProcesos;
         }
+
     }
 
     public enum Estado
     {
-        En_Espera,
+        Listo,
         Ejecutando,
         Bloqueado,
         Terminado
@@ -145,9 +149,9 @@ namespace PlanificadorDeProcesos
             get { return _YaHizoIO; } 
             set
             {
-                if (YaHizoIO != value)
+                if (_YaHizoIO != value)
                 {
-                    YaHizoIO = value;
+                    _YaHizoIO = value;
                     OnPropertyChanged();
                 }
             }
@@ -190,6 +194,34 @@ namespace PlanificadorDeProcesos
                 if (_TiempoEspera != value)
                 {
                     _TiempoEspera = value;
+                    OnPropertyChanged();
+                }
+            }
+        }
+
+        private int _TiempoBloqueadoAcumulado;
+        public int TiempoBloqueadoAcumulado 
+        { 
+            get { return _TiempoBloqueadoAcumulado; } 
+            set
+            {
+                if (_TiempoBloqueadoAcumulado != value)
+                {
+                    _TiempoBloqueadoAcumulado = value;
+                    OnPropertyChanged();
+                }
+            }
+        }
+
+        private int _TickFinalizacion;
+        public int TickFinalizacion 
+        { 
+            get { return _TickFinalizacion; } 
+            set
+            {
+                if (_TickFinalizacion != value)
+                {
+                    _TickFinalizacion = value;
                     OnPropertyChanged();
                 }
             }
@@ -340,6 +372,104 @@ namespace PlanificadorDeProcesos
                 if (_np_TiempoLlegada != value)
                 {
                     _np_TiempoLlegada = value;
+                    OnPropertyChanged();
+                }
+            }
+        }
+
+        private string _lbl_UsoProcesador;
+        public string lbl_UsoProcesador
+        {
+            get { return _lbl_UsoProcesador; }
+            set
+            {
+                if (_lbl_UsoProcesador != value)
+                {
+                    _lbl_UsoProcesador = value;
+                    OnPropertyChanged();
+                }
+            }
+        }
+
+        private string _lbl_TiempoPromEspera;
+        public string lbl_TiempoPromEspera
+        {
+            get { return _lbl_TiempoPromEspera; }
+            set
+            {
+                if (_lbl_TiempoPromEspera != value)
+                {
+                    _lbl_TiempoPromEspera = value;
+                    OnPropertyChanged();
+                }
+            }
+        }
+
+        private string _lbl_TiempoPromBloqueo;
+        public string lbl_TiempoPromBloqueo
+        {
+            get { return _lbl_TiempoPromBloqueo; }
+            set
+            {
+                if (_lbl_TiempoPromBloqueo != value)
+                {
+                    _lbl_TiempoPromBloqueo = value;
+                    OnPropertyChanged();
+                }
+            }
+        }
+
+        private string _lbl_TiempoPromEjecucion;
+        public string lbl_TiempoPromEjecucion
+        {
+            get { return _lbl_TiempoPromEjecucion; }
+            set
+            {
+                if (_lbl_TiempoPromEjecucion != value)
+                {
+                    _lbl_TiempoPromEjecucion = value;
+                    OnPropertyChanged();
+                }
+            }
+        }
+
+        private double _lbl_ProcesosCompletados;
+        public double lbl_ProcesosCompletados
+        {
+            get { return _lbl_ProcesosCompletados; }
+            set
+            {
+                if (_lbl_ProcesosCompletados != value)
+                {
+                    _lbl_ProcesosCompletados = value;
+                    OnPropertyChanged();
+                }
+            }
+        }
+
+        private double _lbl_ProcesosPorPaso;
+        public double lbl_ProcesosPorPaso
+        {
+            get { return _lbl_ProcesosPorPaso; }
+            set
+            {
+                if (_lbl_ProcesosPorPaso != value)
+                {
+                    _lbl_ProcesosPorPaso = value;
+                    OnPropertyChanged();
+                }
+            }
+        }
+
+        private string _lbl_TiempoTotal;
+        public string lbl_TiempoTotal
+        {
+            get { return _lbl_TiempoTotal; }
+            set
+            {
+                if (_lbl_TiempoTotal != value)
+                {
+                    _lbl_TiempoTotal = value;
                     OnPropertyChanged();
                 }
             }
