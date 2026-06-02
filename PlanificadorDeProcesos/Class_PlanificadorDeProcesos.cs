@@ -1,10 +1,354 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Text;
+﻿using System.ComponentModel;
+using System.Runtime.CompilerServices;
 
 namespace PlanificadorDeProcesos
 {
     internal class Class_PlanificadorDeProcesos
     {
+        public BindingList<Proceso> ProcesosEnEspera { get; set; } = new BindingList<Proceso>();
+        public BindingList<Proceso> ProcesosBloqueados { get; set; } = new BindingList<Proceso>();
+        public BindingList<Proceso> ProcesosTerminados { get; set; } = new BindingList<Proceso>();
+
+        public Dictionary<int, string> ComboValues = new Dictionary<int, string>()
+        {
+            { 100, "100 ms"},
+            { 500, "500 ms"},
+            { 1000, "1000 ms"}
+        };
+
+        public FormData FormData { get; set; } = new FormData()
+        {
+            np_MinBurstTime = 1,
+            np_MaxBurstTime = 5,
+            np_MinIOBurstTime = 0,
+            np_MaxIOBurstTime = 0,
+            np_MinPrioridad = 1,
+            np_MaxPrioridad = 5,
+            np_Cantidad = 5,
+            cmb_Tick = 100,
+            np_TiempoLlegada = 0
+        };
+
+        private Random random = new Random();
+        private int contadorId = 1;
+        public List<Proceso> GenerarLote()
+        {
+            List<Proceso> nuevosProcesos = new List<Proceso>();
+
+            for (int i = 0; i < FormData.np_Cantidad; i++)
+            {
+                Proceso p = new Proceso();
+                p.ID = contadorId++;
+                p.TiempoLlegada = FormData.np_TiempoLlegada;
+
+                p.BurstTime = random.Next(FormData.np_MinBurstTime, FormData.np_MaxBurstTime + 1);
+                p.IOBurstTime = random.Next(FormData.np_MinIOBurstTime, FormData.np_MaxIOBurstTime + 1);
+                p.Prioridad = random.Next(FormData.np_MinPrioridad, FormData.np_MaxPrioridad + 1);
+
+                // Inicializamos los valores de ejecución
+                p.TiempoRestanteCPU = p.BurstTime;
+                p.TiempoRestanteIO = p.IOBurstTime;
+                p.Estado = Estado.En_Espera;
+                p.YaHizoIO = false;
+
+                nuevosProcesos.Add(p);
+            }
+
+            return nuevosProcesos;
+        }
+    }
+
+    public enum Estado
+    {
+        En_Espera,
+        Ejecutando,
+        Bloqueado,
+        Terminado
+    }
+    public class Proceso : INotifyPropertyChanged
+    {
+        public event PropertyChangedEventHandler PropertyChanged;
+        
+        private int _ID;
+        public int ID 
+        { 
+            get { return _ID; } 
+            set
+            {
+                if (_ID != value)
+                {
+                    _ID = value;
+                    OnPropertyChanged();
+                }
+            }
+        }
+
+        private int _TiempoLlegada;
+        public int TiempoLlegada
+        {
+            get { return _TiempoLlegada; }
+            set
+            {
+                if (_TiempoLlegada != value)
+                {
+                    _TiempoLlegada = value;
+                    OnPropertyChanged();
+                }
+            }
+        }
+
+        private int _BurstTime;
+        public int BurstTime 
+        { 
+            get { return _BurstTime; } 
+            set
+            {
+                if (_BurstTime != value)
+                {
+                    _BurstTime = value;
+                    OnPropertyChanged();
+                }
+            }
+        }
+
+        private int _IOBurstTime;
+        public int IOBurstTime 
+        { 
+            get { return _IOBurstTime; } 
+            set
+            {
+                if (_IOBurstTime != value)
+                {
+                    _IOBurstTime = value;
+                    OnPropertyChanged();
+                }
+            }
+        }
+
+        private int _Prioridad;
+        public int Prioridad 
+        { 
+            get { return _Prioridad; } 
+            set
+            {
+                if (_Prioridad != value)
+                {
+                    _Prioridad = value;
+                    OnPropertyChanged();
+                }
+            }
+        }
+
+        private bool _YaHizoIO;
+        public bool YaHizoIO 
+        { 
+            get { return _YaHizoIO; } 
+            set
+            {
+                if (YaHizoIO != value)
+                {
+                    YaHizoIO = value;
+                    OnPropertyChanged();
+                }
+            }
+        }
+
+        private int _TiempoRestanteCPU;
+        public int TiempoRestanteCPU 
+        { 
+            get { return _TiempoRestanteCPU; } 
+            set
+            {
+                if (_TiempoRestanteCPU != value)
+                {
+                    _TiempoRestanteCPU = value;
+                    OnPropertyChanged();
+                }
+            }
+        }
+
+        private int _TiempoRestanteIO;
+        public int TiempoRestanteIO 
+        { 
+            get { return _TiempoRestanteIO; } 
+            set
+            {
+                if (_TiempoRestanteIO != value)
+                {
+                    _TiempoRestanteIO = value;
+                    OnPropertyChanged();
+                }
+            }
+        }
+
+        private int _TiempoEspera;
+        public int TiempoEspera 
+        { 
+            get { return _TiempoEspera; } 
+            set
+            {
+                if (_TiempoEspera != value)
+                {
+                    _TiempoEspera = value;
+                    OnPropertyChanged();
+                }
+            }
+        }
+
+        private Estado _Estado;
+        public Estado Estado 
+        { 
+            get { return _Estado; } 
+            set
+            {
+                if (_Estado != value)
+                {
+                    _Estado = value;
+                    OnPropertyChanged();
+                }
+            }
+        }
+
+        protected virtual void OnPropertyChanged([CallerMemberName] string propertyName = null)
+        {
+            PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
+        }
+    }
+
+    public class FormData: INotifyPropertyChanged
+    {
+        public event PropertyChangedEventHandler PropertyChanged;
+
+        private int _np_MinBurstTime;
+        public int np_MinBurstTime
+        {
+            get { return _np_MinBurstTime; }
+            set 
+            {
+                if (_np_MinBurstTime != value)
+                {
+                    _np_MinBurstTime = value;
+                    OnPropertyChanged();
+                }
+            }
+        }
+
+        private int _np_MaxBurstTime;
+        public int np_MaxBurstTime
+        {
+            get { return _np_MaxBurstTime; }
+            set
+            {
+                if (_np_MaxBurstTime != value)
+                {
+                    _np_MaxBurstTime = value;
+                    OnPropertyChanged();
+                }
+            }
+        }
+
+        private int _np_MinIOBurstTime;
+        public int np_MinIOBurstTime
+        {
+            get { return _np_MinIOBurstTime; }
+            set
+            {
+                if (_np_MinIOBurstTime != value)
+                {
+                    _np_MinIOBurstTime = value;
+                    OnPropertyChanged();
+                }
+            }
+        }
+
+        private int _np_MaxIOBurstTime;
+        public int np_MaxIOBurstTime
+        {
+            get { return _np_MaxIOBurstTime; }
+            set
+            {
+                if (_np_MaxIOBurstTime != value)
+                {
+                    _np_MaxIOBurstTime = value;
+                    OnPropertyChanged();
+                }
+            }
+        }
+
+        private int _np_MinPrioridad;
+        public int np_MinPrioridad
+        {
+            get { return _np_MinPrioridad; }
+            set
+            {
+                if (_np_MinPrioridad != value)
+                {
+                    _np_MinPrioridad = value;
+                    OnPropertyChanged();
+                }
+            }
+        }
+
+        private int _np_MaxPrioridad;
+        public int np_MaxPrioridad
+        {
+            get { return _np_MaxPrioridad; }
+            set
+            {
+                if (_np_MaxPrioridad != value)
+                {
+                    _np_MaxPrioridad = value;
+                    OnPropertyChanged();
+                }
+            }
+        }
+
+        private int _np_Cantidad;
+        public int np_Cantidad
+        {
+            get { return _np_Cantidad; }
+            set
+            {
+                if (_np_Cantidad != value)
+                {
+                    _np_Cantidad = value;
+                    OnPropertyChanged();
+                }
+            }
+        }
+
+        private int _cmb_Tick;
+        public int cmb_Tick
+        {
+            get { return _cmb_Tick; }
+            set
+            {
+                if (_cmb_Tick != value)
+                {
+                    _cmb_Tick = value;
+                    OnPropertyChanged();
+                }
+            }
+        }
+
+        private int _np_TiempoLlegada;
+        public int np_TiempoLlegada
+        {
+            get { return _np_TiempoLlegada; }
+            set
+            {
+                if (_np_TiempoLlegada != value)
+                {
+                    _np_TiempoLlegada = value;
+                    OnPropertyChanged();
+                }
+            }
+        }
+
+        protected virtual void OnPropertyChanged([CallerMemberName] string propertyName = null)
+        {
+            PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
+        }
+
     }
 }

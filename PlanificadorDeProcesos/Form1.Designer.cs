@@ -33,7 +33,25 @@
             tableLayoutPanel2 = new TableLayoutPanel();
             pnl_Algoritmos = new Panel();
             pnl_ProcesoActual = new Panel();
-            label21 = new Label();
+            lbl_Estado = new Label();
+            label31 = new Label();
+            lbl_TiempoEspera = new Label();
+            label30 = new Label();
+            lbl_TiempoIO = new Label();
+            label29 = new Label();
+            lbl_TiempoCPU = new Label();
+            label28 = new Label();
+            lbl_YaHizoIO = new Label();
+            label27 = new Label();
+            lbl_Prioridad = new Label();
+            label26 = new Label();
+            lbl_IOBurstTime = new Label();
+            label25 = new Label();
+            lbl_BurstTime = new Label();
+            label23 = new Label();
+            lbl_TiempoLlegada = new Label();
+            label24 = new Label();
+            lbl_ID = new Label();
             label22 = new Label();
             label20 = new Label();
             lbl_Expulsivos = new Label();
@@ -65,11 +83,12 @@
             lbl_UsoProcesador = new Label();
             label5 = new Label();
             label4 = new Label();
+            btn_Aleatorio = new Button();
             btn_Limpiar = new Button();
-            btn_Generar = new Button();
-            numericUpDown1 = new NumericUpDown();
+            btn_Simular = new Button();
+            np_TiempoLlegada = new NumericUpDown();
             label14 = new Label();
-            cb_Tick = new ComboBox();
+            cmb_Tick = new ComboBox();
             label13 = new Label();
             np_Cantidad = new NumericUpDown();
             label12 = new Label();
@@ -89,21 +108,39 @@
             panel1 = new Panel();
             label15 = new Label();
             tableLayoutPanel5 = new TableLayoutPanel();
-            Grid_Bloqueados = new DataGridView();
             panel2 = new Panel();
             label18 = new Label();
             tableLayoutPanel6 = new TableLayoutPanel();
-            Grid_Terminados = new DataGridView();
             panel3 = new Panel();
             label19 = new Label();
             toolTip = new ToolTip(components);
+            ID = new DataGridViewTextBoxColumn();
+            TiempoLlegada = new DataGridViewTextBoxColumn();
+            BurstTime = new DataGridViewTextBoxColumn();
+            IOBurstTime = new DataGridViewTextBoxColumn();
+            Prioridad = new DataGridViewTextBoxColumn();
+            Estado = new DataGridViewTextBoxColumn();
+            Grid_Bloqueados = new DataGridView();
+            dataGridViewTextBoxColumn1 = new DataGridViewTextBoxColumn();
+            dataGridViewTextBoxColumn2 = new DataGridViewTextBoxColumn();
+            dataGridViewTextBoxColumn3 = new DataGridViewTextBoxColumn();
+            dataGridViewTextBoxColumn4 = new DataGridViewTextBoxColumn();
+            dataGridViewTextBoxColumn5 = new DataGridViewTextBoxColumn();
+            dataGridViewTextBoxColumn6 = new DataGridViewTextBoxColumn();
+            Grid_Terminados = new DataGridView();
+            dataGridViewTextBoxColumn7 = new DataGridViewTextBoxColumn();
+            dataGridViewTextBoxColumn8 = new DataGridViewTextBoxColumn();
+            dataGridViewTextBoxColumn9 = new DataGridViewTextBoxColumn();
+            dataGridViewTextBoxColumn10 = new DataGridViewTextBoxColumn();
+            dataGridViewTextBoxColumn11 = new DataGridViewTextBoxColumn();
+            dataGridViewTextBoxColumn12 = new DataGridViewTextBoxColumn();
             tableLayoutPanel1.SuspendLayout();
             tableLayoutPanel2.SuspendLayout();
             pnl_Algoritmos.SuspendLayout();
             pnl_ProcesoActual.SuspendLayout();
             pnl_Generador.SuspendLayout();
             pnl_Estadisticas.SuspendLayout();
-            ((System.ComponentModel.ISupportInitialize)numericUpDown1).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)np_TiempoLlegada).BeginInit();
             ((System.ComponentModel.ISupportInitialize)np_Cantidad).BeginInit();
             ((System.ComponentModel.ISupportInitialize)np_MaxPrioridad).BeginInit();
             ((System.ComponentModel.ISupportInitialize)np_MinPrioridad).BeginInit();
@@ -116,11 +153,11 @@
             ((System.ComponentModel.ISupportInitialize)Grid_EnEspera).BeginInit();
             panel1.SuspendLayout();
             tableLayoutPanel5.SuspendLayout();
-            ((System.ComponentModel.ISupportInitialize)Grid_Bloqueados).BeginInit();
             panel2.SuspendLayout();
             tableLayoutPanel6.SuspendLayout();
-            ((System.ComponentModel.ISupportInitialize)Grid_Terminados).BeginInit();
             panel3.SuspendLayout();
+            ((System.ComponentModel.ISupportInitialize)Grid_Bloqueados).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)Grid_Terminados).BeginInit();
             SuspendLayout();
             // 
             // tableLayoutPanel1
@@ -154,7 +191,6 @@
             tableLayoutPanel2.RowStyles.Add(new RowStyle(SizeType.Absolute, 20F));
             tableLayoutPanel2.Size = new Size(935, 779);
             tableLayoutPanel2.TabIndex = 0;
-            tableLayoutPanel2.Paint += tableLayoutPanel2_Paint;
             // 
             // pnl_Algoritmos
             // 
@@ -178,7 +214,25 @@
             // 
             // pnl_ProcesoActual
             // 
-            pnl_ProcesoActual.Controls.Add(label21);
+            pnl_ProcesoActual.Controls.Add(lbl_Estado);
+            pnl_ProcesoActual.Controls.Add(label31);
+            pnl_ProcesoActual.Controls.Add(lbl_TiempoEspera);
+            pnl_ProcesoActual.Controls.Add(label30);
+            pnl_ProcesoActual.Controls.Add(lbl_TiempoIO);
+            pnl_ProcesoActual.Controls.Add(label29);
+            pnl_ProcesoActual.Controls.Add(lbl_TiempoCPU);
+            pnl_ProcesoActual.Controls.Add(label28);
+            pnl_ProcesoActual.Controls.Add(lbl_YaHizoIO);
+            pnl_ProcesoActual.Controls.Add(label27);
+            pnl_ProcesoActual.Controls.Add(lbl_Prioridad);
+            pnl_ProcesoActual.Controls.Add(label26);
+            pnl_ProcesoActual.Controls.Add(lbl_IOBurstTime);
+            pnl_ProcesoActual.Controls.Add(label25);
+            pnl_ProcesoActual.Controls.Add(lbl_BurstTime);
+            pnl_ProcesoActual.Controls.Add(label23);
+            pnl_ProcesoActual.Controls.Add(lbl_TiempoLlegada);
+            pnl_ProcesoActual.Controls.Add(label24);
+            pnl_ProcesoActual.Controls.Add(lbl_ID);
             pnl_ProcesoActual.Controls.Add(label22);
             pnl_ProcesoActual.Controls.Add(label20);
             pnl_ProcesoActual.Dock = DockStyle.Fill;
@@ -187,22 +241,211 @@
             pnl_ProcesoActual.Size = new Size(927, 348);
             pnl_ProcesoActual.TabIndex = 14;
             // 
-            // label21
+            // lbl_Estado
             // 
-            label21.AutoSize = true;
-            label21.Font = new Font("Segoe UI", 10F);
-            label21.Location = new Point(176, 72);
-            label21.Name = "label21";
-            label21.Size = new Size(65, 28);
-            label21.TabIndex = 17;
-            label21.Text = "label6";
+            lbl_Estado.AutoSize = true;
+            lbl_Estado.Font = new Font("Segoe UI", 10F);
+            lbl_Estado.Location = new Point(768, 294);
+            lbl_Estado.Name = "lbl_Estado";
+            lbl_Estado.Size = new Size(65, 28);
+            lbl_Estado.TabIndex = 35;
+            lbl_Estado.Text = "label6";
+            // 
+            // label31
+            // 
+            label31.AutoSize = true;
+            label31.Font = new Font("Segoe UI", 10F, FontStyle.Bold);
+            label31.ForeColor = Color.RoyalBlue;
+            label31.Location = new Point(519, 294);
+            label31.Name = "label31";
+            label31.Size = new Size(80, 28);
+            label31.TabIndex = 34;
+            label31.Text = "Estado:";
+            // 
+            // lbl_TiempoEspera
+            // 
+            lbl_TiempoEspera.AutoSize = true;
+            lbl_TiempoEspera.Font = new Font("Segoe UI", 10F);
+            lbl_TiempoEspera.Location = new Point(768, 242);
+            lbl_TiempoEspera.Name = "lbl_TiempoEspera";
+            lbl_TiempoEspera.Size = new Size(65, 28);
+            lbl_TiempoEspera.TabIndex = 33;
+            lbl_TiempoEspera.Text = "label6";
+            // 
+            // label30
+            // 
+            label30.AutoSize = true;
+            label30.Font = new Font("Segoe UI", 10F, FontStyle.Bold);
+            label30.ForeColor = Color.RoyalBlue;
+            label30.Location = new Point(519, 242);
+            label30.Name = "label30";
+            label30.Size = new Size(185, 28);
+            label30.TabIndex = 32;
+            label30.Text = "Tiempo de espera:";
+            // 
+            // lbl_TiempoIO
+            // 
+            lbl_TiempoIO.AutoSize = true;
+            lbl_TiempoIO.Font = new Font("Segoe UI", 10F);
+            lbl_TiempoIO.Location = new Point(768, 190);
+            lbl_TiempoIO.Name = "lbl_TiempoIO";
+            lbl_TiempoIO.Size = new Size(65, 28);
+            lbl_TiempoIO.TabIndex = 31;
+            lbl_TiempoIO.Text = "label6";
+            // 
+            // label29
+            // 
+            label29.AutoSize = true;
+            label29.Font = new Font("Segoe UI", 10F, FontStyle.Bold);
+            label29.ForeColor = Color.RoyalBlue;
+            label29.Location = new Point(519, 190);
+            label29.Name = "label29";
+            label29.Size = new Size(228, 28);
+            label29.TabIndex = 30;
+            label29.Text = "Tiempo restante de IO:";
+            // 
+            // lbl_TiempoCPU
+            // 
+            lbl_TiempoCPU.AutoSize = true;
+            lbl_TiempoCPU.Font = new Font("Segoe UI", 10F);
+            lbl_TiempoCPU.Location = new Point(768, 138);
+            lbl_TiempoCPU.Name = "lbl_TiempoCPU";
+            lbl_TiempoCPU.Size = new Size(65, 28);
+            lbl_TiempoCPU.TabIndex = 29;
+            lbl_TiempoCPU.Text = "label6";
+            // 
+            // label28
+            // 
+            label28.AutoSize = true;
+            label28.Font = new Font("Segoe UI", 10F, FontStyle.Bold);
+            label28.ForeColor = Color.RoyalBlue;
+            label28.Location = new Point(519, 138);
+            label28.Name = "label28";
+            label28.Size = new Size(245, 28);
+            label28.TabIndex = 28;
+            label28.Text = "Tiempo restante de CPU:";
+            // 
+            // lbl_YaHizoIO
+            // 
+            lbl_YaHizoIO.AutoSize = true;
+            lbl_YaHizoIO.Font = new Font("Segoe UI", 10F);
+            lbl_YaHizoIO.Location = new Point(768, 82);
+            lbl_YaHizoIO.Name = "lbl_YaHizoIO";
+            lbl_YaHizoIO.Size = new Size(65, 28);
+            lbl_YaHizoIO.TabIndex = 27;
+            lbl_YaHizoIO.Text = "label6";
+            // 
+            // label27
+            // 
+            label27.AutoSize = true;
+            label27.Font = new Font("Segoe UI", 10F, FontStyle.Bold);
+            label27.ForeColor = Color.RoyalBlue;
+            label27.Location = new Point(519, 82);
+            label27.Name = "label27";
+            label27.Size = new Size(156, 28);
+            label27.TabIndex = 26;
+            label27.Text = "IO completado:";
+            // 
+            // lbl_Prioridad
+            // 
+            lbl_Prioridad.AutoSize = true;
+            lbl_Prioridad.Font = new Font("Segoe UI", 10F);
+            lbl_Prioridad.Location = new Point(255, 294);
+            lbl_Prioridad.Name = "lbl_Prioridad";
+            lbl_Prioridad.Size = new Size(65, 28);
+            lbl_Prioridad.TabIndex = 25;
+            lbl_Prioridad.Text = "label6";
+            // 
+            // label26
+            // 
+            label26.AutoSize = true;
+            label26.Font = new Font("Segoe UI", 10F, FontStyle.Bold);
+            label26.ForeColor = Color.RoyalBlue;
+            label26.Location = new Point(57, 294);
+            label26.Name = "label26";
+            label26.Size = new Size(104, 28);
+            label26.TabIndex = 24;
+            label26.Text = "Prioridad:";
+            // 
+            // lbl_IOBurstTime
+            // 
+            lbl_IOBurstTime.AutoSize = true;
+            lbl_IOBurstTime.Font = new Font("Segoe UI", 10F);
+            lbl_IOBurstTime.Location = new Point(255, 242);
+            lbl_IOBurstTime.Name = "lbl_IOBurstTime";
+            lbl_IOBurstTime.Size = new Size(65, 28);
+            lbl_IOBurstTime.TabIndex = 23;
+            lbl_IOBurstTime.Text = "label6";
+            // 
+            // label25
+            // 
+            label25.AutoSize = true;
+            label25.Font = new Font("Segoe UI", 10F, FontStyle.Bold);
+            label25.ForeColor = Color.RoyalBlue;
+            label25.Location = new Point(57, 242);
+            label25.Name = "label25";
+            label25.Size = new Size(147, 28);
+            label25.TabIndex = 22;
+            label25.Text = "IO Burst Time:";
+            // 
+            // lbl_BurstTime
+            // 
+            lbl_BurstTime.AutoSize = true;
+            lbl_BurstTime.Font = new Font("Segoe UI", 10F);
+            lbl_BurstTime.Location = new Point(255, 190);
+            lbl_BurstTime.Name = "lbl_BurstTime";
+            lbl_BurstTime.Size = new Size(65, 28);
+            lbl_BurstTime.TabIndex = 21;
+            lbl_BurstTime.Text = "label6";
+            // 
+            // label23
+            // 
+            label23.AutoSize = true;
+            label23.Font = new Font("Segoe UI", 10F, FontStyle.Bold);
+            label23.ForeColor = Color.RoyalBlue;
+            label23.Location = new Point(57, 190);
+            label23.Name = "label23";
+            label23.Size = new Size(120, 28);
+            label23.TabIndex = 20;
+            label23.Text = "Burst Time:";
+            // 
+            // lbl_TiempoLlegada
+            // 
+            lbl_TiempoLlegada.AutoSize = true;
+            lbl_TiempoLlegada.Font = new Font("Segoe UI", 10F);
+            lbl_TiempoLlegada.Location = new Point(255, 138);
+            lbl_TiempoLlegada.Name = "lbl_TiempoLlegada";
+            lbl_TiempoLlegada.Size = new Size(65, 28);
+            lbl_TiempoLlegada.TabIndex = 19;
+            lbl_TiempoLlegada.Text = "label6";
+            // 
+            // label24
+            // 
+            label24.AutoSize = true;
+            label24.Font = new Font("Segoe UI", 10F, FontStyle.Bold);
+            label24.ForeColor = Color.RoyalBlue;
+            label24.Location = new Point(57, 138);
+            label24.Name = "label24";
+            label24.Size = new Size(192, 28);
+            label24.TabIndex = 18;
+            label24.Text = "Tiempo de llegada:";
+            // 
+            // lbl_ID
+            // 
+            lbl_ID.AutoSize = true;
+            lbl_ID.Font = new Font("Segoe UI", 10F);
+            lbl_ID.Location = new Point(255, 82);
+            lbl_ID.Name = "lbl_ID";
+            lbl_ID.Size = new Size(65, 28);
+            lbl_ID.TabIndex = 17;
+            lbl_ID.Text = "label6";
             // 
             // label22
             // 
             label22.AutoSize = true;
             label22.Font = new Font("Segoe UI", 10F, FontStyle.Bold);
             label22.ForeColor = Color.RoyalBlue;
-            label22.Location = new Point(31, 72);
+            label22.Location = new Point(57, 82);
             label22.Name = "label22";
             label22.Size = new Size(118, 28);
             label22.TabIndex = 16;
@@ -333,11 +576,12 @@
             // 
             pnl_Generador.BorderStyle = BorderStyle.FixedSingle;
             pnl_Generador.Controls.Add(pnl_Estadisticas);
+            pnl_Generador.Controls.Add(btn_Aleatorio);
             pnl_Generador.Controls.Add(btn_Limpiar);
-            pnl_Generador.Controls.Add(btn_Generar);
-            pnl_Generador.Controls.Add(numericUpDown1);
+            pnl_Generador.Controls.Add(btn_Simular);
+            pnl_Generador.Controls.Add(np_TiempoLlegada);
             pnl_Generador.Controls.Add(label14);
-            pnl_Generador.Controls.Add(cb_Tick);
+            pnl_Generador.Controls.Add(cmb_Tick);
             pnl_Generador.Controls.Add(label13);
             pnl_Generador.Controls.Add(np_Cantidad);
             pnl_Generador.Controls.Add(label12);
@@ -356,7 +600,6 @@
             pnl_Generador.Name = "pnl_Generador";
             pnl_Generador.Size = new Size(929, 417);
             pnl_Generador.TabIndex = 1;
-            pnl_Generador.Paint += pnl_Generador_Paint;
             // 
             // pnl_Estadisticas
             // 
@@ -388,6 +631,7 @@
             // 
             btn_Reiniciar.Location = new Point(430, 341);
             btn_Reiniciar.Name = "btn_Reiniciar";
+            btn_Reiniciar.Padding = new Padding(0, 2, 0, 2);
             btn_Reiniciar.Size = new Size(199, 49);
             btn_Reiniciar.TabIndex = 29;
             btn_Reiniciar.Text = "Reiniciar prueba";
@@ -398,6 +642,7 @@
             // 
             btn_CambiarAlgoritmo.Location = new Point(214, 341);
             btn_CambiarAlgoritmo.Name = "btn_CambiarAlgoritmo";
+            btn_CambiarAlgoritmo.Padding = new Padding(0, 2, 0, 2);
             btn_CambiarAlgoritmo.Size = new Size(199, 49);
             btn_CambiarAlgoritmo.TabIndex = 28;
             btn_CambiarAlgoritmo.Text = "Cambiar algoritmo";
@@ -471,7 +716,7 @@
             // 
             lbl_TiempoPromEjecucion.AutoSize = true;
             lbl_TiempoPromEjecucion.Font = new Font("Segoe UI", 10F);
-            lbl_TiempoPromEjecucion.Location = new Point(367, 271);
+            lbl_TiempoPromEjecucion.Location = new Point(347, 271);
             lbl_TiempoPromEjecucion.Name = "lbl_TiempoPromEjecucion";
             lbl_TiempoPromEjecucion.Size = new Size(65, 28);
             lbl_TiempoPromEjecucion.TabIndex = 21;
@@ -492,7 +737,7 @@
             // 
             lbl_TiempoPromBloqueo.AutoSize = true;
             lbl_TiempoPromBloqueo.Font = new Font("Segoe UI", 10F);
-            lbl_TiempoPromBloqueo.Location = new Point(348, 214);
+            lbl_TiempoPromBloqueo.Location = new Point(347, 214);
             lbl_TiempoPromBloqueo.Name = "lbl_TiempoPromBloqueo";
             lbl_TiempoPromBloqueo.Size = new Size(65, 28);
             lbl_TiempoPromBloqueo.TabIndex = 19;
@@ -513,7 +758,7 @@
             // 
             lbl_TiempoPromEspera.AutoSize = true;
             lbl_TiempoPromEspera.Font = new Font("Segoe UI", 10F);
-            lbl_TiempoPromEspera.Location = new Point(339, 161);
+            lbl_TiempoPromEspera.Location = new Point(347, 161);
             lbl_TiempoPromEspera.Name = "lbl_TiempoPromEspera";
             lbl_TiempoPromEspera.Size = new Size(65, 28);
             lbl_TiempoPromEspera.TabIndex = 17;
@@ -562,32 +807,44 @@
             label4.TabIndex = 13;
             label4.Text = "Estadísticas algoritmo";
             // 
+            // btn_Aleatorio
+            // 
+            btn_Aleatorio.Location = new Point(729, 82);
+            btn_Aleatorio.Name = "btn_Aleatorio";
+            btn_Aleatorio.Padding = new Padding(0, 2, 0, 2);
+            btn_Aleatorio.Size = new Size(133, 49);
+            btn_Aleatorio.TabIndex = 36;
+            btn_Aleatorio.Text = "Generar Data";
+            btn_Aleatorio.UseVisualStyleBackColor = true;
+            // 
             // btn_Limpiar
             // 
-            btn_Limpiar.Location = new Point(749, 159);
+            btn_Limpiar.Location = new Point(729, 175);
             btn_Limpiar.Name = "btn_Limpiar";
+            btn_Limpiar.Padding = new Padding(0, 2, 0, 2);
             btn_Limpiar.Size = new Size(133, 49);
             btn_Limpiar.TabIndex = 35;
             btn_Limpiar.Text = "Limpiar";
             btn_Limpiar.UseVisualStyleBackColor = true;
             // 
-            // btn_Generar
+            // btn_Simular
             // 
-            btn_Generar.Location = new Point(749, 76);
-            btn_Generar.Name = "btn_Generar";
-            btn_Generar.Size = new Size(133, 49);
-            btn_Generar.TabIndex = 34;
-            btn_Generar.Text = "Generar";
-            btn_Generar.UseVisualStyleBackColor = true;
-            btn_Generar.Click += btn_Generar_Click;
+            btn_Simular.Location = new Point(729, 268);
+            btn_Simular.Name = "btn_Simular";
+            btn_Simular.Padding = new Padding(0, 2, 0, 2);
+            btn_Simular.Size = new Size(133, 49);
+            btn_Simular.TabIndex = 34;
+            btn_Simular.Text = "Simular";
+            btn_Simular.UseVisualStyleBackColor = true;
+            btn_Simular.Click += btn_Generar_Click;
             // 
-            // numericUpDown1
+            // np_TiempoLlegada
             // 
-            numericUpDown1.Location = new Point(379, 327);
-            numericUpDown1.Maximum = new decimal(new int[] { 20, 0, 0, 0 });
-            numericUpDown1.Name = "numericUpDown1";
-            numericUpDown1.Size = new Size(90, 31);
-            numericUpDown1.TabIndex = 33;
+            np_TiempoLlegada.Location = new Point(379, 327);
+            np_TiempoLlegada.Maximum = new decimal(new int[] { 20, 0, 0, 0 });
+            np_TiempoLlegada.Name = "np_TiempoLlegada";
+            np_TiempoLlegada.Size = new Size(90, 31);
+            np_TiempoLlegada.TabIndex = 33;
             // 
             // label14
             // 
@@ -600,14 +857,14 @@
             label14.TabIndex = 32;
             label14.Text = "Tiempo de llegada";
             // 
-            // cb_Tick
+            // cmb_Tick
             // 
-            cb_Tick.DropDownStyle = ComboBoxStyle.DropDownList;
-            cb_Tick.FormattingEnabled = true;
-            cb_Tick.Location = new Point(379, 220);
-            cb_Tick.Name = "cb_Tick";
-            cb_Tick.Size = new Size(198, 33);
-            cb_Tick.TabIndex = 31;
+            cmb_Tick.DropDownStyle = ComboBoxStyle.DropDownList;
+            cmb_Tick.FormattingEnabled = true;
+            cmb_Tick.Location = new Point(379, 220);
+            cmb_Tick.Name = "cmb_Tick";
+            cmb_Tick.Size = new Size(198, 33);
+            cmb_Tick.TabIndex = 31;
             // 
             // label13
             // 
@@ -782,11 +1039,18 @@
             // 
             // Grid_EnEspera
             // 
+            Grid_EnEspera.AutoSizeColumnsMode = DataGridViewAutoSizeColumnsMode.Fill;
             Grid_EnEspera.ColumnHeadersHeightSizeMode = DataGridViewColumnHeadersHeightSizeMode.AutoSize;
+            Grid_EnEspera.Columns.AddRange(new DataGridViewColumn[] { ID, TiempoLlegada, BurstTime, IOBurstTime, Prioridad, Estado });
             Grid_EnEspera.Dock = DockStyle.Fill;
             Grid_EnEspera.Location = new Point(3, 48);
             Grid_EnEspera.Name = "Grid_EnEspera";
+            Grid_EnEspera.ReadOnly = true;
+            Grid_EnEspera.RowHeadersVisible = false;
             Grid_EnEspera.RowHeadersWidth = 62;
+            Grid_EnEspera.SelectionMode = DataGridViewSelectionMode.FullRowSelect;
+            Grid_EnEspera.ShowEditingIcon = false;
+            Grid_EnEspera.ShowRowErrors = false;
             Grid_EnEspera.Size = new Size(1084, 202);
             Grid_EnEspera.TabIndex = 0;
             // 
@@ -801,10 +1065,9 @@
             // 
             // label15
             // 
-            label15.Anchor = AnchorStyles.Left | AnchorStyles.Right;
             label15.AutoSize = true;
             label15.Font = new Font("Segoe UI Black", 12F, FontStyle.Bold, GraphicsUnit.Point, 0);
-            label15.ForeColor = Color.MediumVioletRed;
+            label15.ForeColor = Color.Goldenrod;
             label15.Location = new Point(492, 2);
             label15.Name = "label15";
             label15.Size = new Size(125, 32);
@@ -826,16 +1089,6 @@
             tableLayoutPanel5.RowStyles.Add(new RowStyle(SizeType.Percent, 100F));
             tableLayoutPanel5.Size = new Size(1090, 253);
             tableLayoutPanel5.TabIndex = 4;
-            // 
-            // Grid_Bloqueados
-            // 
-            Grid_Bloqueados.ColumnHeadersHeightSizeMode = DataGridViewColumnHeadersHeightSizeMode.AutoSize;
-            Grid_Bloqueados.Dock = DockStyle.Fill;
-            Grid_Bloqueados.Location = new Point(3, 48);
-            Grid_Bloqueados.Name = "Grid_Bloqueados";
-            Grid_Bloqueados.RowHeadersWidth = 62;
-            Grid_Bloqueados.Size = new Size(1084, 202);
-            Grid_Bloqueados.TabIndex = 1;
             // 
             // panel2
             // 
@@ -873,16 +1126,6 @@
             tableLayoutPanel6.Size = new Size(1090, 255);
             tableLayoutPanel6.TabIndex = 5;
             // 
-            // Grid_Terminados
-            // 
-            Grid_Terminados.ColumnHeadersHeightSizeMode = DataGridViewColumnHeadersHeightSizeMode.AutoSize;
-            Grid_Terminados.Dock = DockStyle.Fill;
-            Grid_Terminados.Location = new Point(3, 48);
-            Grid_Terminados.Name = "Grid_Terminados";
-            Grid_Terminados.RowHeadersWidth = 62;
-            Grid_Terminados.Size = new Size(1084, 204);
-            Grid_Terminados.TabIndex = 2;
-            // 
             // panel3
             // 
             panel3.Controls.Add(label19);
@@ -903,6 +1146,184 @@
             label19.TabIndex = 2;
             label19.Text = "Terminados";
             // 
+            // ID
+            // 
+            ID.DataPropertyName = "ID";
+            ID.HeaderText = "ID";
+            ID.MinimumWidth = 8;
+            ID.Name = "ID";
+            ID.ReadOnly = true;
+            // 
+            // TiempoLlegada
+            // 
+            TiempoLlegada.DataPropertyName = "TiempoLlegada";
+            TiempoLlegada.HeaderText = "Tiempo de llegada";
+            TiempoLlegada.MinimumWidth = 8;
+            TiempoLlegada.Name = "TiempoLlegada";
+            TiempoLlegada.ReadOnly = true;
+            // 
+            // BurstTime
+            // 
+            BurstTime.DataPropertyName = "BurstTime";
+            BurstTime.HeaderText = "Burst Time";
+            BurstTime.MinimumWidth = 8;
+            BurstTime.Name = "BurstTime";
+            BurstTime.ReadOnly = true;
+            // 
+            // IOBurstTime
+            // 
+            IOBurstTime.DataPropertyName = "IOBurstTime";
+            IOBurstTime.HeaderText = "IO Burst Time";
+            IOBurstTime.MinimumWidth = 8;
+            IOBurstTime.Name = "IOBurstTime";
+            IOBurstTime.ReadOnly = true;
+            // 
+            // Prioridad
+            // 
+            Prioridad.DataPropertyName = "Prioridad";
+            Prioridad.HeaderText = "Prioridad";
+            Prioridad.MinimumWidth = 8;
+            Prioridad.Name = "Prioridad";
+            Prioridad.ReadOnly = true;
+            // 
+            // Estado
+            // 
+            Estado.DataPropertyName = "Estado";
+            Estado.HeaderText = "Estado";
+            Estado.MinimumWidth = 8;
+            Estado.Name = "Estado";
+            Estado.ReadOnly = true;
+            // 
+            // Grid_Bloqueados
+            // 
+            Grid_Bloqueados.AutoSizeColumnsMode = DataGridViewAutoSizeColumnsMode.Fill;
+            Grid_Bloqueados.ColumnHeadersHeightSizeMode = DataGridViewColumnHeadersHeightSizeMode.AutoSize;
+            Grid_Bloqueados.Columns.AddRange(new DataGridViewColumn[] { dataGridViewTextBoxColumn1, dataGridViewTextBoxColumn2, dataGridViewTextBoxColumn3, dataGridViewTextBoxColumn4, dataGridViewTextBoxColumn5, dataGridViewTextBoxColumn6 });
+            Grid_Bloqueados.Dock = DockStyle.Fill;
+            Grid_Bloqueados.Location = new Point(3, 48);
+            Grid_Bloqueados.Name = "Grid_Bloqueados";
+            Grid_Bloqueados.ReadOnly = true;
+            Grid_Bloqueados.RowHeadersVisible = false;
+            Grid_Bloqueados.RowHeadersWidth = 62;
+            Grid_Bloqueados.SelectionMode = DataGridViewSelectionMode.FullRowSelect;
+            Grid_Bloqueados.ShowEditingIcon = false;
+            Grid_Bloqueados.ShowRowErrors = false;
+            Grid_Bloqueados.Size = new Size(1084, 202);
+            Grid_Bloqueados.TabIndex = 3;
+            // 
+            // dataGridViewTextBoxColumn1
+            // 
+            dataGridViewTextBoxColumn1.DataPropertyName = "ID";
+            dataGridViewTextBoxColumn1.HeaderText = "ID";
+            dataGridViewTextBoxColumn1.MinimumWidth = 8;
+            dataGridViewTextBoxColumn1.Name = "dataGridViewTextBoxColumn1";
+            dataGridViewTextBoxColumn1.ReadOnly = true;
+            // 
+            // dataGridViewTextBoxColumn2
+            // 
+            dataGridViewTextBoxColumn2.DataPropertyName = "TiempoLlegada";
+            dataGridViewTextBoxColumn2.HeaderText = "Tiempo de llegada";
+            dataGridViewTextBoxColumn2.MinimumWidth = 8;
+            dataGridViewTextBoxColumn2.Name = "dataGridViewTextBoxColumn2";
+            dataGridViewTextBoxColumn2.ReadOnly = true;
+            // 
+            // dataGridViewTextBoxColumn3
+            // 
+            dataGridViewTextBoxColumn3.DataPropertyName = "BurstTime";
+            dataGridViewTextBoxColumn3.HeaderText = "Burst Time";
+            dataGridViewTextBoxColumn3.MinimumWidth = 8;
+            dataGridViewTextBoxColumn3.Name = "dataGridViewTextBoxColumn3";
+            dataGridViewTextBoxColumn3.ReadOnly = true;
+            // 
+            // dataGridViewTextBoxColumn4
+            // 
+            dataGridViewTextBoxColumn4.DataPropertyName = "IOBurstTime";
+            dataGridViewTextBoxColumn4.HeaderText = "IO Burst Time";
+            dataGridViewTextBoxColumn4.MinimumWidth = 8;
+            dataGridViewTextBoxColumn4.Name = "dataGridViewTextBoxColumn4";
+            dataGridViewTextBoxColumn4.ReadOnly = true;
+            // 
+            // dataGridViewTextBoxColumn5
+            // 
+            dataGridViewTextBoxColumn5.DataPropertyName = "Prioridad";
+            dataGridViewTextBoxColumn5.HeaderText = "Prioridad";
+            dataGridViewTextBoxColumn5.MinimumWidth = 8;
+            dataGridViewTextBoxColumn5.Name = "dataGridViewTextBoxColumn5";
+            dataGridViewTextBoxColumn5.ReadOnly = true;
+            // 
+            // dataGridViewTextBoxColumn6
+            // 
+            dataGridViewTextBoxColumn6.DataPropertyName = "Estado";
+            dataGridViewTextBoxColumn6.HeaderText = "Estado";
+            dataGridViewTextBoxColumn6.MinimumWidth = 8;
+            dataGridViewTextBoxColumn6.Name = "dataGridViewTextBoxColumn6";
+            dataGridViewTextBoxColumn6.ReadOnly = true;
+            // 
+            // Grid_Terminados
+            // 
+            Grid_Terminados.AutoSizeColumnsMode = DataGridViewAutoSizeColumnsMode.Fill;
+            Grid_Terminados.ColumnHeadersHeightSizeMode = DataGridViewColumnHeadersHeightSizeMode.AutoSize;
+            Grid_Terminados.Columns.AddRange(new DataGridViewColumn[] { dataGridViewTextBoxColumn7, dataGridViewTextBoxColumn8, dataGridViewTextBoxColumn9, dataGridViewTextBoxColumn10, dataGridViewTextBoxColumn11, dataGridViewTextBoxColumn12 });
+            Grid_Terminados.Dock = DockStyle.Fill;
+            Grid_Terminados.Location = new Point(3, 48);
+            Grid_Terminados.Name = "Grid_Terminados";
+            Grid_Terminados.ReadOnly = true;
+            Grid_Terminados.RowHeadersVisible = false;
+            Grid_Terminados.RowHeadersWidth = 62;
+            Grid_Terminados.SelectionMode = DataGridViewSelectionMode.FullRowSelect;
+            Grid_Terminados.ShowEditingIcon = false;
+            Grid_Terminados.ShowRowErrors = false;
+            Grid_Terminados.Size = new Size(1084, 204);
+            Grid_Terminados.TabIndex = 4;
+            // 
+            // dataGridViewTextBoxColumn7
+            // 
+            dataGridViewTextBoxColumn7.DataPropertyName = "ID";
+            dataGridViewTextBoxColumn7.HeaderText = "ID";
+            dataGridViewTextBoxColumn7.MinimumWidth = 8;
+            dataGridViewTextBoxColumn7.Name = "dataGridViewTextBoxColumn7";
+            dataGridViewTextBoxColumn7.ReadOnly = true;
+            // 
+            // dataGridViewTextBoxColumn8
+            // 
+            dataGridViewTextBoxColumn8.DataPropertyName = "TiempoLlegada";
+            dataGridViewTextBoxColumn8.HeaderText = "Tiempo de llegada";
+            dataGridViewTextBoxColumn8.MinimumWidth = 8;
+            dataGridViewTextBoxColumn8.Name = "dataGridViewTextBoxColumn8";
+            dataGridViewTextBoxColumn8.ReadOnly = true;
+            // 
+            // dataGridViewTextBoxColumn9
+            // 
+            dataGridViewTextBoxColumn9.DataPropertyName = "BurstTime";
+            dataGridViewTextBoxColumn9.HeaderText = "Burst Time";
+            dataGridViewTextBoxColumn9.MinimumWidth = 8;
+            dataGridViewTextBoxColumn9.Name = "dataGridViewTextBoxColumn9";
+            dataGridViewTextBoxColumn9.ReadOnly = true;
+            // 
+            // dataGridViewTextBoxColumn10
+            // 
+            dataGridViewTextBoxColumn10.DataPropertyName = "IOBurstTime";
+            dataGridViewTextBoxColumn10.HeaderText = "IO Burst Time";
+            dataGridViewTextBoxColumn10.MinimumWidth = 8;
+            dataGridViewTextBoxColumn10.Name = "dataGridViewTextBoxColumn10";
+            dataGridViewTextBoxColumn10.ReadOnly = true;
+            // 
+            // dataGridViewTextBoxColumn11
+            // 
+            dataGridViewTextBoxColumn11.DataPropertyName = "Prioridad";
+            dataGridViewTextBoxColumn11.HeaderText = "Prioridad";
+            dataGridViewTextBoxColumn11.MinimumWidth = 8;
+            dataGridViewTextBoxColumn11.Name = "dataGridViewTextBoxColumn11";
+            dataGridViewTextBoxColumn11.ReadOnly = true;
+            // 
+            // dataGridViewTextBoxColumn12
+            // 
+            dataGridViewTextBoxColumn12.DataPropertyName = "Estado";
+            dataGridViewTextBoxColumn12.HeaderText = "Estado";
+            dataGridViewTextBoxColumn12.MinimumWidth = 8;
+            dataGridViewTextBoxColumn12.Name = "dataGridViewTextBoxColumn12";
+            dataGridViewTextBoxColumn12.ReadOnly = true;
+            // 
             // Form1
             // 
             AutoScaleDimensions = new SizeF(10F, 25F);
@@ -922,7 +1343,7 @@
             pnl_Generador.PerformLayout();
             pnl_Estadisticas.ResumeLayout(false);
             pnl_Estadisticas.PerformLayout();
-            ((System.ComponentModel.ISupportInitialize)numericUpDown1).EndInit();
+            ((System.ComponentModel.ISupportInitialize)np_TiempoLlegada).EndInit();
             ((System.ComponentModel.ISupportInitialize)np_Cantidad).EndInit();
             ((System.ComponentModel.ISupportInitialize)np_MaxPrioridad).EndInit();
             ((System.ComponentModel.ISupportInitialize)np_MinPrioridad).EndInit();
@@ -936,13 +1357,13 @@
             panel1.ResumeLayout(false);
             panel1.PerformLayout();
             tableLayoutPanel5.ResumeLayout(false);
-            ((System.ComponentModel.ISupportInitialize)Grid_Bloqueados).EndInit();
             panel2.ResumeLayout(false);
             panel2.PerformLayout();
             tableLayoutPanel6.ResumeLayout(false);
-            ((System.ComponentModel.ISupportInitialize)Grid_Terminados).EndInit();
             panel3.ResumeLayout(false);
             panel3.PerformLayout();
+            ((System.ComponentModel.ISupportInitialize)Grid_Bloqueados).EndInit();
+            ((System.ComponentModel.ISupportInitialize)Grid_Terminados).EndInit();
             ResumeLayout(false);
         }
 
@@ -953,8 +1374,6 @@
         private Panel pnl_Algoritmos;
         private TableLayoutPanel tableLayoutPanel3;
         private DataGridView Grid_EnEspera;
-        private DataGridView Grid_Bloqueados;
-        private DataGridView Grid_Terminados;
         private RadioButton rb_SRTF;
         private RadioButton rb_RoundRobin;
         private RadioButton rb_Prioridades;
@@ -979,12 +1398,12 @@
         private Label label11;
         private NumericUpDown np_Cantidad;
         private Label label12;
-        private NumericUpDown numericUpDown1;
+        private NumericUpDown np_TiempoLlegada;
         private Label label14;
-        private ComboBox cb_Tick;
+        private ComboBox cmb_Tick;
         private Label label13;
         private Button btn_Limpiar;
-        private Button btn_Generar;
+        private Button btn_Simular;
         private ToolTip toolTip;
         private Label lbl_UsoProcesador;
         private Label label5;
@@ -1012,9 +1431,48 @@
         private Label label19;
         private Panel pnl_ProcesoActual;
         private Label label20;
-        private Label label21;
+        private Label lbl_ID;
         private Label label22;
         private Button btn_Reiniciar;
         private Button btn_CambiarAlgoritmo;
+        private Button btn_Aleatorio;
+        private Label lbl_TiempoLlegada;
+        private Label label24;
+        private Label lbl_TiempoCPU;
+        private Label label28;
+        private Label lbl_YaHizoIO;
+        private Label label27;
+        private Label lbl_Prioridad;
+        private Label label26;
+        private Label lbl_IOBurstTime;
+        private Label label25;
+        private Label lbl_BurstTime;
+        private Label label23;
+        private Label lbl_Estado;
+        private Label label31;
+        private Label lbl_TiempoEspera;
+        private Label label30;
+        private Label lbl_TiempoIO;
+        private Label label29;
+        private DataGridViewTextBoxColumn ID;
+        private DataGridViewTextBoxColumn TiempoLlegada;
+        private DataGridViewTextBoxColumn BurstTime;
+        private DataGridViewTextBoxColumn IOBurstTime;
+        private DataGridViewTextBoxColumn Prioridad;
+        private DataGridViewTextBoxColumn Estado;
+        private DataGridView Grid_Bloqueados;
+        private DataGridViewTextBoxColumn dataGridViewTextBoxColumn1;
+        private DataGridViewTextBoxColumn dataGridViewTextBoxColumn2;
+        private DataGridViewTextBoxColumn dataGridViewTextBoxColumn3;
+        private DataGridViewTextBoxColumn dataGridViewTextBoxColumn4;
+        private DataGridViewTextBoxColumn dataGridViewTextBoxColumn5;
+        private DataGridViewTextBoxColumn dataGridViewTextBoxColumn6;
+        private DataGridView Grid_Terminados;
+        private DataGridViewTextBoxColumn dataGridViewTextBoxColumn7;
+        private DataGridViewTextBoxColumn dataGridViewTextBoxColumn8;
+        private DataGridViewTextBoxColumn dataGridViewTextBoxColumn9;
+        private DataGridViewTextBoxColumn dataGridViewTextBoxColumn10;
+        private DataGridViewTextBoxColumn dataGridViewTextBoxColumn11;
+        private DataGridViewTextBoxColumn dataGridViewTextBoxColumn12;
     }
 }
