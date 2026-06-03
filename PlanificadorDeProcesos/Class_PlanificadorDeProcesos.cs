@@ -5,6 +5,8 @@ namespace PlanificadorDeProcesos
 {
     internal class Class_PlanificadorDeProcesos
     {
+        #region Consts
+
         public static string tp_BurstTime = "Tiempo total (en ticks) que el proceso necesita usar el procesador (CPU) para terminar su tarea.";
         public static string tp_BurstTimeIO = "Tiempo (en ticks) que el proceso pasará bloqueado simulando operaciones\nde Entrada/Salida (como leer un disco duro o esperar al usuario).";
         public static string tp_Prioridad = "Nivel de importancia del proceso. Generalmente, un número más bajo indica una mayor urgencia.";
@@ -20,6 +22,10 @@ namespace PlanificadorDeProcesos
         public static string tp_RoundRobin = "Atiende en orden de llegada, pero asigna un tiempo máximo estricto (Quantum) a cada proceso.\nSi el tiempo se acaba, expulsa al proceso y lo manda al final de la fila.";
         public static string tp_SRTF = "Versión expulsiva del SJF. Vigila constantemente la cola; si llega un proceso nuevo\nque terminaría más rápido que el actual, interrumpe la CPU y mete al nuevo.";
         public static string tp_PrioridadExpulsivo = "El sistema siempre ejecuta el proceso más importante. Si la CPU está ocupada y llega\nun proceso con mejor prioridad, expulsa inmediatamente al proceso actual para darle paso al VIP.";
+
+        #endregion
+
+        #region Variables
         public BindingList<Proceso> ProcesosListos { get; set; } = new BindingList<Proceso>();
         public BindingList<Proceso> ProcesosNuevos { get; set; } = new BindingList<Proceso>();
         public BindingList<Proceso> ProcesosBloqueados { get; set; } = new BindingList<Proceso>();
@@ -57,6 +63,8 @@ namespace PlanificadorDeProcesos
             lbl_TiempoPromEjecucion = "0 ticks",
             lbl_ProcesosPorPaso = 0,
         };
+
+        #endregion
 
         private Random random = new Random();
         public void GenerarLote()

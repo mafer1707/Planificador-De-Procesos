@@ -4,13 +4,22 @@ namespace PlanificadorDeProcesos
     using CAT = Class_PlanificadorDeProcesos;
     public partial class Form1 : Form
     {
+        #region Variables
+
         CAT CA = new CAT();
+
         AlgoritmoPlanificacion algoritmoSeleccionado;
+        private BindingSource bsProceso = new BindingSource();
+        private int tickActual = 0;
+        private int ticksCPUOcupada = 0;
+        private int quantumRestanteActual = 0;
+        private Random generadorAleatorio = new Random();
+
+        #endregion
         public Form1()
         {
             InitializeComponent();
         }
-
         private void Form1_Load(object sender, EventArgs e)
         {
             cmb_Tick.DataSource = CA.ComboValues.ToList();
@@ -28,12 +37,12 @@ namespace PlanificadorDeProcesos
             pnl_ProcesoActual.Visible = false;
         }
 
+        #region Button Events
         private void btn_Reiniciar_Click(object sender, EventArgs e)
         {
             LimpiarEstadisticas();
             btn_Simular.PerformClick();
         }
-
         private void btn_Simular_Click(object sender, EventArgs e)
         {
             pnl_Estadisticas.Visible = true;
@@ -55,7 +64,6 @@ namespace PlanificadorDeProcesos
             timer.Interval = CA.FormData.cmb_Tick;
             timer.Start();
         }
-
         private void btn_CambiarAlgoritmo_Click(object sender, EventArgs e)
         {
             pnl_Estadisticas.Visible = false;
@@ -65,8 +73,52 @@ namespace PlanificadorDeProcesos
             LimpiarTodo();
             LimpiarEstadisticas();
         }
+        private void btn_Limpiar_Click(object sender, EventArgs e)
+        {
+            CA.FormData.np_MinBurstTime = 1;
+            CA.FormData.np_MaxBurstTime = 5;
+            CA.FormData.np_MinIOBurstTime = 0;
+            CA.FormData.np_MaxIOBurstTime = 0;
+            CA.FormData.np_MinPrioridad = 1;
+            CA.FormData.np_MaxPrioridad = 5;
+            CA.FormData.np_Cantidad = 5;
+            CA.FormData.np_Quantum = 1;
+            CA.FormData.cmb_Tick = 100;
+            CA.FormData.np_MinTiempoLlegada = 0;
+            CA.FormData.np_MaxTiempoLlegada = 0;
+        }
 
-        private BindingSource bsProceso = new BindingSource();
+        #endregion
+
+        #region RadButton Events
+        private void rb_RoundRobin_CheckedChanged(object sender, EventArgs e)
+        {
+            np_Quantum.Enabled = rb_RoundRobin.Checked;
+        }
+        private void rb_PrioridadesExpulsivo_CheckedChanged(object sender, EventArgs e)
+        {
+            np_MinPrioridad.Enabled = np_MaxPrioridad.Enabled = rb_PrioridadesExpulsivo.Checked;
+        }
+        private void rb_PrioridadesNoExpulsivo_CheckedChanged(object sender, EventArgs e)
+        {
+            np_MinPrioridad.Enabled = np_MaxPrioridad.Enabled = rb_PrioridadesNoExpulsivo.Checked;
+        }
+
+        #endregion
+
+        #region Functions
+        private void CalcularEstadisticas()
+        {
+            if (CA.ProcesosTerminados.Count == 0 || tickActual == 0) return;
+
+            CA.FormData.lbl_TiempoTotal = $"{tickActual} ticks";
+            CA.FormData.lbl_ProcesosCompletados = CA.ProcesosTerminados.Count;
+            CA.FormData.lbl_UsoProcesador = $"{Math.Round(((double)ticksCPUOcupada / tickActual) * 100, 2)} %";
+            CA.FormData.lbl_TiempoPromEspera = $"{Math.Round(CA.ProcesosTerminados.Average(p => p.TiempoEspera), 2)} ticks";
+            CA.FormData.lbl_TiempoPromBloqueo = $"{Math.Round(CA.ProcesosTerminados.Average(p => p.TiempoBloqueadoAcumulado), 2)} ticks";
+            CA.FormData.lbl_TiempoPromEjecucion = $"{Math.Round(CA.ProcesosTerminados.Average(p => p.TickFinalizacion - p.TiempoLlegada), 2)} ticks";
+            CA.FormData.lbl_ProcesosPorPaso = Math.Round((double)CA.ProcesosTerminados.Count / tickActual, 3);
+        }
         private void SetBindings()
         {
             bsProceso.DataSource = new Proceso();
@@ -114,12 +166,65 @@ namespace PlanificadorDeProcesos
 
             #endregion
         }
+        private void LimpiarEstadisticas()
+        {
+            CA.FormData.lbl_TiempoTotal = "0 ticks";
+            CA.FormData.lbl_ProcesosCompletados = 0;
+            CA.FormData.lbl_UsoProcesador = "0 %";
+            CA.FormData.lbl_TiempoPromEspera = "0 ticks";
+            CA.FormData.lbl_TiempoPromBloqueo = "0 ticks";
+            CA.FormData.lbl_TiempoPromEjecucion = "0 ticks";
+            CA.FormData.lbl_ProcesosPorPaso = 0;
+        }
+        private void ConfigurarGrid()
+        {
+            Grid_Nuevos.Columns["PrioridadNuevos"]!.Visible = rb_PrioridadesExpulsivo.Checked || rb_PrioridadesNoExpulsivo.Checked;
+            Grid_Listo.Columns["Prioridad"]!.Visible = rb_PrioridadesExpulsivo.Checked || rb_PrioridadesNoExpulsivo.Checked;
+            Grid_Bloqueados.Columns["PrioridadBloqueados"]!.Visible = rb_PrioridadesExpulsivo.Checked || rb_PrioridadesNoExpulsivo.Checked;
+            Grid_Terminados.Columns["PrioridadTerminados"]!.Visible = rb_PrioridadesExpulsivo.Checked || rb_PrioridadesNoExpulsivo.Checked;
+        }
+        private void LimpiarTodo()
+        {
+            tickActual = 0;
+            ticksCPUOcupada = 0;
+            quantumRestanteActual = 0;
 
-        private int tickActual = 0;
-        private int ticksCPUOcupada = 0;
-        private int quantumRestanteActual = 0;
-        private Random generadorAleatorio = new Random();
+            CA.ProcesosBloqueados.Clear();
+            CA.ProcesosTerminados.Clear();
+            CA.ProcesosListos.Clear();
+        }
+        private void SetToolTips()
+        {
+            toolTip.SetToolTip(lb_BurstTime, CAT.tp_BurstTime);
+            toolTip.SetToolTip(lb_BurstTimeIO, CAT.tp_BurstTimeIO);
+            toolTip.SetToolTip(lb_Prioridad, CAT.tp_Prioridad);
+            toolTip.SetToolTip(lb_Quantum, CAT.tp_Quantum);
+            toolTip.SetToolTip(lb_Cantidad, CAT.tp_CantidadProcesos);
+            toolTip.SetToolTip(lb_TiempoTick, CAT.tp_TiempoTick);
+            toolTip.SetToolTip(lb_TiempoLlegada, CAT.tp_TiempoLlegada);
 
+            toolTip.SetToolTip(rb_FCFS, CAT.tp_FCFS);
+            toolTip.SetToolTip(rb_SJF, CAT.tp_SJF);
+            toolTip.SetToolTip(rb_SeleccionAleatoria, CAT.tp_Aleatorio);
+            toolTip.SetToolTip(rb_PrioridadesNoExpulsivo, CAT.tp_PrioridadNoExpulsiva);
+            toolTip.SetToolTip(rb_RoundRobin, CAT.tp_RoundRobin);
+            toolTip.SetToolTip(rb_SRTF, CAT.tp_SRTF);
+            toolTip.SetToolTip(rb_PrioridadesExpulsivo, CAT.tp_PrioridadExpulsivo);
+        }
+        private void GridConfig()
+        {
+            Grid_Listo.AutoGenerateColumns = false;
+            Grid_Bloqueados.AutoGenerateColumns = false;
+            Grid_Terminados.AutoGenerateColumns = false;
+            Grid_Nuevos.AutoGenerateColumns = false;
+
+            Grid_Bloqueados.DataSource = CA.ProcesosBloqueados;
+            Grid_Terminados.DataSource = CA.ProcesosTerminados;
+            Grid_Listo.DataSource = CA.ProcesosListos;
+            Grid_Nuevos.DataSource = CA.ProcesosNuevos;
+        }
+
+        #endregion
         private void timer_Tick(object sender, EventArgs e)
         {
             for (int i = CA.ProcesosNuevos.Count - 1; i >= 0; i--)
@@ -294,111 +399,6 @@ namespace PlanificadorDeProcesos
             {
                 tickActual++;
             }
-        }
-
-        private void CalcularEstadisticas()
-        {
-            if (CA.ProcesosTerminados.Count == 0 || tickActual == 0) return;
-
-            CA.FormData.lbl_TiempoTotal = $"{tickActual} ticks";
-            CA.FormData.lbl_ProcesosCompletados = CA.ProcesosTerminados.Count;
-            CA.FormData.lbl_UsoProcesador = $"{Math.Round(((double)ticksCPUOcupada / tickActual) * 100, 2)} %";
-            CA.FormData.lbl_TiempoPromEspera = $"{Math.Round(CA.ProcesosTerminados.Average(p => p.TiempoEspera), 2)} ticks";
-            CA.FormData.lbl_TiempoPromBloqueo = $"{Math.Round(CA.ProcesosTerminados.Average(p => p.TiempoBloqueadoAcumulado), 2)} ticks";
-            CA.FormData.lbl_TiempoPromEjecucion = $"{Math.Round(CA.ProcesosTerminados.Average(p => p.TickFinalizacion - p.TiempoLlegada), 2)} ticks";
-            CA.FormData.lbl_ProcesosPorPaso = Math.Round((double)CA.ProcesosTerminados.Count / tickActual, 3);
-        }
-
-        private void rb_RoundRobin_CheckedChanged(object sender, EventArgs e)
-        {
-            np_Quantum.Enabled = rb_RoundRobin.Checked;
-        }
-
-        private void rb_PrioridadesExpulsivo_CheckedChanged(object sender, EventArgs e)
-        {
-            np_MinPrioridad.Enabled = np_MaxPrioridad.Enabled = rb_PrioridadesExpulsivo.Checked;
-        }
-
-        private void rb_PrioridadesNoExpulsivo_CheckedChanged(object sender, EventArgs e)
-        {
-            np_MinPrioridad.Enabled = np_MaxPrioridad.Enabled = rb_PrioridadesNoExpulsivo.Checked;
-        }
-
-        private void btn_Limpiar_Click(object sender, EventArgs e)
-        {
-            CA.FormData.np_MinBurstTime = 1;
-            CA.FormData.np_MaxBurstTime = 5;
-            CA.FormData.np_MinIOBurstTime = 0;
-            CA.FormData.np_MaxIOBurstTime = 0;
-            CA.FormData.np_MinPrioridad = 1;
-            CA.FormData.np_MaxPrioridad = 5;
-            CA.FormData.np_Cantidad = 5;
-            CA.FormData.np_Quantum = 1;
-            CA.FormData.cmb_Tick = 100;
-            CA.FormData.np_MinTiempoLlegada = 0;
-            CA.FormData.np_MaxTiempoLlegada = 0;
-        }
-
-        private void LimpiarEstadisticas()
-        {
-            CA.FormData.lbl_TiempoTotal = "0 ticks";
-            CA.FormData.lbl_ProcesosCompletados = 0;
-            CA.FormData.lbl_UsoProcesador = "0 %";
-            CA.FormData.lbl_TiempoPromEspera = "0 ticks";
-            CA.FormData.lbl_TiempoPromBloqueo = "0 ticks";
-            CA.FormData.lbl_TiempoPromEjecucion = "0 ticks";
-            CA.FormData.lbl_ProcesosPorPaso = 0;
-        }
-
-        private void ConfigurarGrid()
-        {
-            Grid_Nuevos.Columns["PrioridadNuevos"]!.Visible = rb_PrioridadesExpulsivo.Checked || rb_PrioridadesNoExpulsivo.Checked;
-            Grid_Listo.Columns["Prioridad"]!.Visible = rb_PrioridadesExpulsivo.Checked || rb_PrioridadesNoExpulsivo.Checked;
-            Grid_Bloqueados.Columns["PrioridadBloqueados"]!.Visible = rb_PrioridadesExpulsivo.Checked || rb_PrioridadesNoExpulsivo.Checked;
-            Grid_Terminados.Columns["PrioridadTerminados"]!.Visible = rb_PrioridadesExpulsivo.Checked || rb_PrioridadesNoExpulsivo.Checked;
-        }
-
-        private void LimpiarTodo()
-        {
-            tickActual = 0;
-            ticksCPUOcupada = 0;
-            quantumRestanteActual = 0;
-
-            CA.ProcesosBloqueados.Clear();
-            CA.ProcesosTerminados.Clear();
-            CA.ProcesosListos.Clear();
-        }
-
-        private void SetToolTips()
-        {
-            toolTip.SetToolTip(lb_BurstTime, CAT.tp_BurstTime);
-            toolTip.SetToolTip(lb_BurstTimeIO, CAT.tp_BurstTimeIO);
-            toolTip.SetToolTip(lb_Prioridad, CAT.tp_Prioridad);
-            toolTip.SetToolTip(lb_Quantum, CAT.tp_Quantum);
-            toolTip.SetToolTip(lb_Cantidad, CAT.tp_CantidadProcesos);
-            toolTip.SetToolTip(lb_TiempoTick, CAT.tp_TiempoTick);
-            toolTip.SetToolTip(lb_TiempoLlegada, CAT.tp_TiempoLlegada);
-
-            toolTip.SetToolTip(rb_FCFS, CAT.tp_FCFS);
-            toolTip.SetToolTip(rb_SJF, CAT.tp_SJF);
-            toolTip.SetToolTip(rb_SeleccionAleatoria, CAT.tp_Aleatorio);
-            toolTip.SetToolTip(rb_PrioridadesNoExpulsivo, CAT.tp_PrioridadNoExpulsiva);
-            toolTip.SetToolTip(rb_RoundRobin, CAT.tp_RoundRobin);
-            toolTip.SetToolTip(rb_SRTF, CAT.tp_SRTF);
-            toolTip.SetToolTip(rb_PrioridadesExpulsivo, CAT.tp_PrioridadExpulsivo);
-        }
-
-        private void GridConfig()
-        {
-            Grid_Listo.AutoGenerateColumns = false;
-            Grid_Bloqueados.AutoGenerateColumns = false;
-            Grid_Terminados.AutoGenerateColumns = false;
-            Grid_Nuevos.AutoGenerateColumns = false;
-
-            Grid_Bloqueados.DataSource = CA.ProcesosBloqueados;
-            Grid_Terminados.DataSource = CA.ProcesosTerminados;
-            Grid_Listo.DataSource = CA.ProcesosListos;
-            Grid_Nuevos.DataSource = CA.ProcesosNuevos;
         }
     }
 }
