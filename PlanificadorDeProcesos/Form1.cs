@@ -20,10 +20,15 @@ namespace PlanificadorDeProcesos
             Grid_Listo.AutoGenerateColumns = false;
             Grid_Bloqueados.AutoGenerateColumns = false;
             Grid_Terminados.AutoGenerateColumns = false;
+            Grid_Nuevos.AutoGenerateColumns = false;
 
             Grid_Bloqueados.DataSource = CA.ProcesosBloqueados;
             Grid_Terminados.DataSource = CA.ProcesosTerminados;
             Grid_Listo.DataSource = CA.ProcesosListos;
+            Grid_Nuevos.DataSource = CA.ProcesosNuevos;
+
+            np_MinPrioridad.Enabled = np_MaxPrioridad.Enabled = rb_PrioridadesExpulsivo.Checked;
+            np_Quantum.Enabled = rb_RoundRobin.Checked;
 
             SetBindings();
 
@@ -33,10 +38,10 @@ namespace PlanificadorDeProcesos
 
         private void btn_Reiniciar_Click(object sender, EventArgs e)
         {
-
+            btn_Simular.PerformClick();
         }
 
-        private void btn_Generar_Click(object sender, EventArgs e)
+        private void btn_Simular_Click(object sender, EventArgs e)
         {
             pnl_Estadisticas.Visible = true;
             pnl_ProcesoActual.Visible = true;
@@ -77,7 +82,7 @@ namespace PlanificadorDeProcesos
             np_MinPrioridad.DataBindings.Add("Value", CA.FormData, nameof(CAT.FormData.np_MinPrioridad), false, DataSourceUpdateMode.OnPropertyChanged);
             np_MaxPrioridad.DataBindings.Add("Value", CA.FormData, nameof(CAT.FormData.np_MaxPrioridad), false, DataSourceUpdateMode.OnPropertyChanged);
             np_Cantidad.DataBindings.Add("Value", CA.FormData, nameof(CAT.FormData.np_Cantidad), false, DataSourceUpdateMode.OnPropertyChanged);
-            cmb_Tick.DataBindings.Add("SelectedValue", CA.FormData, nameof(CAT.FormData.cmb_Tick), false, DataSourceUpdateMode.OnPropertyChanged);         
+            cmb_Tick.DataBindings.Add("SelectedValue", CA.FormData, nameof(CAT.FormData.cmb_Tick), false, DataSourceUpdateMode.OnPropertyChanged);
             np_MinTiempoLlegada.DataBindings.Add("Value", CA.FormData, nameof(CAT.FormData.np_MinTiempoLlegada), false, DataSourceUpdateMode.OnPropertyChanged);
             np_MaxTiempoLlegada.DataBindings.Add("Value", CA.FormData, nameof(CAT.FormData.np_MaxTiempoLlegada), false, DataSourceUpdateMode.OnPropertyChanged);
             np_Quantum.DataBindings.Add("Value", CA.FormData, nameof(CAT.FormData.np_Quantum), false, DataSourceUpdateMode.OnPropertyChanged);
@@ -101,7 +106,7 @@ namespace PlanificadorDeProcesos
             lbl_TiempoCPU.DataBindings.Add("Text", bsProceso, "TiempoRestanteCPU", false, DataSourceUpdateMode.OnPropertyChanged);
             lbl_TiempoIO.DataBindings.Add("Text", bsProceso, "TiempoRestanteIO", false, DataSourceUpdateMode.OnPropertyChanged);
             lbl_TiempoEspera.DataBindings.Add("Text", bsProceso, "TiempoEspera", false, DataSourceUpdateMode.OnPropertyChanged);
-            lbl_Estado.DataBindings.Add("Text", bsProceso, "Estado", true, DataSourceUpdateMode.OnPropertyChanged);       
+            lbl_Estado.DataBindings.Add("Text", bsProceso, "Estado", true, DataSourceUpdateMode.OnPropertyChanged);
         }
 
         private int tickActual = 0;
@@ -146,8 +151,8 @@ namespace PlanificadorDeProcesos
                     if (mejorEnCola.TiempoRestanteCPU < CA.ProcesoEnCPU.TiempoRestanteCPU)
                     {
                         CA.ProcesoEnCPU.Estado = PlanificadorDeProcesos.Estado.Listo;
-                        CA.ProcesosListos.Add(CA.ProcesoEnCPU); 
-                        CA.ProcesoEnCPU = null; 
+                        CA.ProcesosListos.Add(CA.ProcesoEnCPU);
+                        CA.ProcesoEnCPU = null;
                     }
                 }
 
@@ -159,7 +164,7 @@ namespace PlanificadorDeProcesos
                     {
                         CA.ProcesoEnCPU.Estado = PlanificadorDeProcesos.Estado.Listo;
                         CA.ProcesosListos.Add(CA.ProcesoEnCPU);
-                        CA.ProcesoEnCPU = null; 
+                        CA.ProcesoEnCPU = null;
                     }
                 }
             }
@@ -255,9 +260,9 @@ namespace PlanificadorDeProcesos
                         CA.ProcesosListos.Remove(prioritarioExpulsivo);
                         break;
                 }
-                         
+
                 CA.ProcesoEnCPU.Estado = PlanificadorDeProcesos.Estado.Ejecutando;
-              
+
             }
 
             #endregion
@@ -267,7 +272,7 @@ namespace PlanificadorDeProcesos
                 p.TiempoEspera++;
             }
 
-            if(CA.ProcesoEnCPU != null)
+            if (CA.ProcesoEnCPU != null)
             {
                 bsProceso.DataSource = CA.ProcesoEnCPU;
             }
@@ -299,6 +304,36 @@ namespace PlanificadorDeProcesos
             CA.FormData.lbl_TiempoPromBloqueo = $"{Math.Round(CA.ProcesosTerminados.Average(p => p.TiempoBloqueadoAcumulado), 2)} ticks";
             CA.FormData.lbl_TiempoPromEjecucion = $"{Math.Round(CA.ProcesosTerminados.Average(p => p.TickFinalizacion - p.TiempoLlegada), 2)} ticks";
             CA.FormData.lbl_ProcesosPorPaso = Math.Round((double)CA.ProcesosTerminados.Count / tickActual, 3);
+        }
+
+        private void rb_RoundRobin_CheckedChanged(object sender, EventArgs e)
+        {
+            np_Quantum.Enabled = rb_RoundRobin.Checked;
+        }
+
+        private void rb_PrioridadesExpulsivo_CheckedChanged(object sender, EventArgs e)
+        {
+            np_MinPrioridad.Enabled = np_MaxPrioridad.Enabled = rb_PrioridadesExpulsivo.Checked;
+        }
+
+        private void rb_PrioridadesNoExpulsivo_CheckedChanged(object sender, EventArgs e)
+        {
+            np_MinPrioridad.Enabled = np_MaxPrioridad.Enabled = rb_PrioridadesNoExpulsivo.Checked;
+        }
+
+        private void btn_Limpiar_Click(object sender, EventArgs e)
+        {
+            CA.FormData.np_MinBurstTime = 1;
+            CA.FormData.np_MaxBurstTime = 5;
+            CA.FormData.np_MinIOBurstTime = 0;
+            CA.FormData.np_MaxIOBurstTime = 0;
+            CA.FormData.np_MinPrioridad = 1;
+            CA.FormData.np_MaxPrioridad = 5;
+            CA.FormData.np_Cantidad = 5;
+            CA.FormData.np_Quantum = 1;
+            CA.FormData.cmb_Tick = 100;
+            CA.FormData.np_MinTiempoLlegada = 0;
+            CA.FormData.np_MaxTiempoLlegada = 0;
         }
     }
 }

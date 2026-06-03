@@ -6,7 +6,7 @@ namespace PlanificadorDeProcesos
     internal class Class_PlanificadorDeProcesos
     {
         public BindingList<Proceso> ProcesosListos { get; set; } = new BindingList<Proceso>();
-        public List<Proceso> ProcesosNuevos { get; set; } = new List<Proceso>();
+        public BindingList<Proceso> ProcesosNuevos { get; set; } = new BindingList<Proceso>();
         public BindingList<Proceso> ProcesosBloqueados { get; set; } = new BindingList<Proceso>();
         public BindingList<Proceso> ProcesosTerminados { get; set; } = new BindingList<Proceso>();
 
@@ -16,7 +16,9 @@ namespace PlanificadorDeProcesos
         {
             { 100, "100 ms"},
             { 500, "500 ms"},
-            { 1000, "1000 ms"}
+            { 1000, "1000 ms"},
+            { 1500, "1500 ms"},
+            { 2000, "2000 ms"}
         };
 
         public FormData FormData { get; set; } = new FormData()
@@ -28,8 +30,10 @@ namespace PlanificadorDeProcesos
             np_MinPrioridad = 1,
             np_MaxPrioridad = 5,
             np_Cantidad = 5,
+            np_Quantum = 1,
             cmb_Tick = 100,
-            np_MinTiempoLlegada = 0
+            np_MinTiempoLlegada = 0,
+            np_MaxTiempoLlegada = 0
         };
 
         private Random random = new Random();
@@ -52,7 +56,7 @@ namespace PlanificadorDeProcesos
                 // Inicializamos los valores de ejecución
                 p.TiempoRestanteCPU = p.BurstTime;
                 p.TiempoRestanteIO = p.IOBurstTime;
-                p.Estado = Estado.Listo;
+                p.Estado = Estado.Nuevo;
                 p.YaHizoIO = false;
 
                 ProcesosNuevos.Add(p);
@@ -64,6 +68,7 @@ namespace PlanificadorDeProcesos
 
     public enum Estado
     {
+        Nuevo,
         Listo,
         Ejecutando,
         Bloqueado,
