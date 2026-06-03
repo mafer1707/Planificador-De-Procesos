@@ -6,6 +6,7 @@ namespace PlanificadorDeProcesos
     internal class Class_PlanificadorDeProcesos
     {
         public BindingList<Proceso> ProcesosListos { get; set; } = new BindingList<Proceso>();
+        public List<Proceso> ProcesosNuevos { get; set; } = new List<Proceso>();
         public BindingList<Proceso> ProcesosBloqueados { get; set; } = new BindingList<Proceso>();
         public BindingList<Proceso> ProcesosTerminados { get; set; } = new BindingList<Proceso>();
 
@@ -28,22 +29,21 @@ namespace PlanificadorDeProcesos
             np_MaxPrioridad = 5,
             np_Cantidad = 5,
             cmb_Tick = 100,
-            np_TiempoLlegada = 0
+            np_MinTiempoLlegada = 0
         };
 
         private Random random = new Random();
-        private int contadorId;
         public void GenerarLote()
         {
             //List<Proceso> nuevosProcesos = new List<Proceso>();
-            ProcesosListos.Clear();
-            contadorId = 1;
+            ProcesosNuevos.Clear();
+            int contadorId = 1;
 
             for (int i = 0; i < FormData.np_Cantidad; i++)
             {
                 Proceso p = new Proceso();
                 p.ID = contadorId++;
-                p.TiempoLlegada = FormData.np_TiempoLlegada;
+                p.TiempoLlegada = random.Next(FormData.np_MinTiempoLlegada, FormData.np_MaxTiempoLlegada + 1);
 
                 p.BurstTime = random.Next(FormData.np_MinBurstTime, FormData.np_MaxBurstTime + 1);
                 p.IOBurstTime = random.Next(FormData.np_MinIOBurstTime, FormData.np_MaxIOBurstTime + 1);
@@ -55,7 +55,7 @@ namespace PlanificadorDeProcesos
                 p.Estado = Estado.Listo;
                 p.YaHizoIO = false;
 
-                ProcesosListos.Add(p);
+                ProcesosNuevos.Add(p);
             }
 
         }
@@ -68,6 +68,16 @@ namespace PlanificadorDeProcesos
         Ejecutando,
         Bloqueado,
         Terminado
+    }
+    public enum AlgoritmoPlanificacion
+    {
+        FCFS,
+        SJF,
+        Aleatorio,
+        PrioridadNoExpulsiva,
+        RoundRobin,
+        SRTF,
+        PrioridadExpulsiva
     }
     public class Proceso : INotifyPropertyChanged
     {
@@ -363,15 +373,29 @@ namespace PlanificadorDeProcesos
             }
         }
 
-        private int _np_TiempoLlegada;
-        public int np_TiempoLlegada
+        private int _np_MinTiempoLlegada;
+        public int np_MinTiempoLlegada
         {
-            get { return _np_TiempoLlegada; }
+            get { return _np_MinTiempoLlegada; }
             set
             {
-                if (_np_TiempoLlegada != value)
+                if (_np_MinTiempoLlegada != value)
                 {
-                    _np_TiempoLlegada = value;
+                    _np_MinTiempoLlegada = value;
+                    OnPropertyChanged();
+                }
+            }
+        }
+
+        private int _np_MaxTiempoLlegada;
+        public int np_MaxTiempoLlegada
+        {
+            get { return _np_MaxTiempoLlegada; }
+            set
+            {
+                if (_np_MaxTiempoLlegada != value)
+                {
+                    _np_MaxTiempoLlegada = value;
                     OnPropertyChanged();
                 }
             }

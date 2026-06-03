@@ -5,6 +5,7 @@ namespace PlanificadorDeProcesos
     public partial class Form1 : Form
     {
         CAT CA = new CAT();
+        AlgoritmoPlanificacion algoritmoSeleccionado;
         public Form1()
         {
             InitializeComponent();
@@ -44,6 +45,14 @@ namespace PlanificadorDeProcesos
             CA.ProcesosTerminados.Clear();
             CA.GenerarLote();
 
+            if (rb_FCFS.Checked) algoritmoSeleccionado = AlgoritmoPlanificacion.FCFS;
+            else if (rb_SJF.Checked) algoritmoSeleccionado = AlgoritmoPlanificacion.SJF;
+            else if (rb_SeleccionAleatoria.Checked) algoritmoSeleccionado = AlgoritmoPlanificacion.Aleatorio;
+            else if (rb_PrioridadesNoExpulsivo.Checked) algoritmoSeleccionado = AlgoritmoPlanificacion.PrioridadNoExpulsiva;
+            else if (rb_RoundRobin.Checked) algoritmoSeleccionado = AlgoritmoPlanificacion.RoundRobin;
+            else if (rb_SRTF.Checked) algoritmoSeleccionado = AlgoritmoPlanificacion.SRTF;
+            else if (rb_PrioridadesExpulsivo.Checked) algoritmoSeleccionado = AlgoritmoPlanificacion.PrioridadExpulsiva;
+
             timer.Interval = CA.FormData.cmb_Tick;
             timer.Start();
         }
@@ -69,7 +78,8 @@ namespace PlanificadorDeProcesos
             np_MaxPrioridad.DataBindings.Add("Value", CA.FormData, nameof(CAT.FormData.np_MaxPrioridad), false, DataSourceUpdateMode.OnPropertyChanged);
             np_Cantidad.DataBindings.Add("Value", CA.FormData, nameof(CAT.FormData.np_Cantidad), false, DataSourceUpdateMode.OnPropertyChanged);
             cmb_Tick.DataBindings.Add("SelectedValue", CA.FormData, nameof(CAT.FormData.cmb_Tick), false, DataSourceUpdateMode.OnPropertyChanged);         
-            np_TiempoLlegada.DataBindings.Add("Value", CA.FormData, nameof(CAT.FormData.np_TiempoLlegada), false, DataSourceUpdateMode.OnPropertyChanged);
+            np_MinTiempoLlegada.DataBindings.Add("Value", CA.FormData, nameof(CAT.FormData.np_MinTiempoLlegada), false, DataSourceUpdateMode.OnPropertyChanged);
+            np_MaxTiempoLlegada.DataBindings.Add("Value", CA.FormData, nameof(CAT.FormData.np_MaxTiempoLlegada), false, DataSourceUpdateMode.OnPropertyChanged);
 
             //Panel Estadisticas
             lbl_UsoProcesador.DataBindings.Add("Text", CA.FormData, nameof(CAT.FormData.lbl_UsoProcesador), false, DataSourceUpdateMode.OnPropertyChanged);
@@ -95,9 +105,18 @@ namespace PlanificadorDeProcesos
 
         private int tickActual = 0;
         private int ticksCPUOcupada = 0;
+        Random generadorAleatorio = new Random();
         private void timer_Tick(object sender, EventArgs e)
         {
-            tickActual++;
+            for (int i = CA.ProcesosNuevos.Count - 1; i >= 0; i--)
+            {
+                if (CA.ProcesosNuevos[i].TiempoLlegada == tickActual)
+                {
+                    CA.ProcesosNuevos[i].Estado = PlanificadorDeProcesos.Estado.Listo;
+                    CA.ProcesosListos.Add(CA.ProcesosNuevos[i]);
+                    CA.ProcesosNuevos.RemoveAt(i);
+                }
+            }
 
             for (int i = CA.ProcesosBloqueados.Count - 1; i >= 0; i--)
             {
@@ -142,9 +161,36 @@ namespace PlanificadorDeProcesos
 
             if (CA.ProcesoEnCPU == null && CA.ProcesosListos.Count > 0)
             {
-                CA.ProcesoEnCPU = CA.ProcesosListos[0];
-                CA.ProcesosListos.RemoveAt(0);
+                switch (algoritmoSeleccionado)
+                {
+                    case AlgoritmoPlanificacion.FCFS:
+                        CA.ProcesoEnCPU = CA.ProcesosListos[0];
+                        CA.ProcesosListos.RemoveAt(0);
+                        break;
+
+                    case AlgoritmoPlanificacion.SJF:
+                        var sjf = CA.ProcesosListos.OrderBy(p => p.TiempoRestanteCPU).ThenBy(p => p.TiempoLlegada).First();
+                        CA.ProcesoEnCPU = sjf;
+                        CA.ProcesosListos.Remove(sjf);
+                        break;
+
+                    case AlgoritmoPlanificacion.Aleatorio:
+                        int indiceAleatorio = generadorAleatorio.Next(0, CA.ProcesosListos.Count);
+                        var procesoAlAzar = CA.ProcesosListos[indiceAleatorio];
+                        CA.ProcesoEnCPU = procesoAlAzar;
+                        CA.ProcesosListos.RemoveAt(indiceAleatorio);
+                        break;
+
+                    case AlgoritmoPlanificacion.PrioridadNoExpulsiva:
+                        var procesoPrioritario = CA.ProcesosListos.OrderBy(p => p.Prioridad).ThenBy(p => p.TiempoLlegada).First();
+                        CA.ProcesoEnCPU = procesoPrioritario;
+                        CA.ProcesosListos.Remove(procesoPrioritario);
+                        break;
+                }
+                
+                
                 CA.ProcesoEnCPU.Estado = PlanificadorDeProcesos.Estado.Ejecutando;
+              
             }
 
             foreach (var p in CA.ProcesosListos)
@@ -157,7 +203,7 @@ namespace PlanificadorDeProcesos
                 bsProceso.DataSource = CA.ProcesoEnCPU;
             }
 
-            if (CA.ProcesoEnCPU == null && CA.ProcesosListos.Count == 0 && CA.ProcesosBloqueados.Count == 0)
+            if (CA.ProcesoEnCPU == null && CA.ProcesosListos.Count == 0 && CA.ProcesosBloqueados.Count == 0 && CA.ProcesosNuevos.Count == 0)
             {
                 timer.Stop();
                 MessageBox.Show($"Simulación finalizada en tick {tickActual}", "Fin simulación", MessageBoxButtons.OK, MessageBoxIcon.Information);
@@ -166,7 +212,10 @@ namespace PlanificadorDeProcesos
 
                 tickActual = 0;
                 ticksCPUOcupada = 0;
-
+            }
+            else
+            {
+                tickActual++;
             }
         }
 
