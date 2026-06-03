@@ -5,6 +5,21 @@ namespace PlanificadorDeProcesos
 {
     internal class Class_PlanificadorDeProcesos
     {
+        public static string tp_BurstTime = "Tiempo total (en ticks) que el proceso necesita usar el procesador (CPU) para terminar su tarea.";
+        public static string tp_BurstTimeIO = "Tiempo (en ticks) que el proceso pasará bloqueado simulando operaciones\nde Entrada/Salida (como leer un disco duro o esperar al usuario).";
+        public static string tp_Prioridad = "Nivel de importancia del proceso. Generalmente, un número más bajo indica una mayor urgencia.";
+        public static string tp_Quantum = "Tiempo máximo continuo que un proceso puede usar la CPU antes de ser expulsado\ny devuelto a la fila. Exclusivo del algoritmo Round Robin.";
+        public static string tp_CantidadProcesos = "El número total de procesos aleatorios que se crearán para esta ejecución de la simulación.";
+        public static string tp_TiempoTick = "Velocidad visual de la simulación. Define cuántos milisegundos de la vida real\ntoma procesar un \"paso\" o tick del algoritmo.";
+        public static string tp_TiempoLlegada = "El momento (o rango de ticks) en el que los procesos \"nacen\"\ne ingresan al sistema para comenzar a competir por la CPU.";
+        
+        public static string tp_FCFS = "Atiende a los procesos en el orden exacto en el que van llegando a la cola.\nNo interrumpe a nadie hasta que terminan o se bloquean.";
+        public static string tp_SJF = "Busca en la fila y ejecuta primero al proceso que requiera la menor cantidad de tiempo total de CPU.";
+        public static string tp_Aleatorio = "El planificador elige el siguiente proceso a ejecutar de forma completamente al azar, ignorando tiempos de llegada, ráfagas o prioridades.";
+        public static string tp_PrioridadNoExpulsiva = "Ejecuta primero al proceso con el nivel de prioridad más urgente (número más bajo). Una vez asignada la CPU, el proceso no puede ser interrumpido.";
+        public static string tp_RoundRobin = "Atiende en orden de llegada, pero asigna un tiempo máximo estricto (Quantum) a cada proceso.\nSi el tiempo se acaba, expulsa al proceso y lo manda al final de la fila.";
+        public static string tp_SRTF = "Versión expulsiva del SJF. Vigila constantemente la cola; si llega un proceso nuevo\nque terminaría más rápido que el actual, interrumpe la CPU y mete al nuevo.";
+        public static string tp_PrioridadExpulsivo = "El sistema siempre ejecuta el proceso más importante. Si la CPU está ocupada y llega\nun proceso con mejor prioridad, expulsa inmediatamente al proceso actual para darle paso al VIP.";
         public BindingList<Proceso> ProcesosListos { get; set; } = new BindingList<Proceso>();
         public BindingList<Proceso> ProcesosNuevos { get; set; } = new BindingList<Proceso>();
         public BindingList<Proceso> ProcesosBloqueados { get; set; } = new BindingList<Proceso>();
@@ -33,14 +48,22 @@ namespace PlanificadorDeProcesos
             np_Quantum = 1,
             cmb_Tick = 100,
             np_MinTiempoLlegada = 0,
-            np_MaxTiempoLlegada = 0
+            np_MaxTiempoLlegada = 0,
+            lbl_TiempoTotal = "0 ticks",
+            lbl_ProcesosCompletados = 0,
+            lbl_UsoProcesador = "0 %",
+            lbl_TiempoPromEspera = "0 ticks",
+            lbl_TiempoPromBloqueo = "0 ticks",
+            lbl_TiempoPromEjecucion = "0 ticks",
+            lbl_ProcesosPorPaso = 0,
         };
 
         private Random random = new Random();
         public void GenerarLote()
         {
-            //List<Proceso> nuevosProcesos = new List<Proceso>();
             ProcesosNuevos.Clear();
+            List<Proceso> nuevosProcesos = new List<Proceso>();
+
             int contadorId = 1;
 
             for (int i = 0; i < FormData.np_Cantidad; i++)
@@ -53,17 +76,21 @@ namespace PlanificadorDeProcesos
                 p.IOBurstTime = random.Next(FormData.np_MinIOBurstTime, FormData.np_MaxIOBurstTime + 1);
                 p.Prioridad = random.Next(FormData.np_MinPrioridad, FormData.np_MaxPrioridad + 1);
 
-                // Inicializamos los valores de ejecución
                 p.TiempoRestanteCPU = p.BurstTime;
                 p.TiempoRestanteIO = p.IOBurstTime;
                 p.Estado = Estado.Nuevo;
                 p.YaHizoIO = false;
 
-                ProcesosNuevos.Add(p);
+                nuevosProcesos.Add(p);
             }
 
-        }
+            nuevosProcesos.Reverse();
 
+            foreach(var p in nuevosProcesos)
+            {
+                ProcesosNuevos.Add(p);
+            }
+        }
     }
 
     public enum Estado

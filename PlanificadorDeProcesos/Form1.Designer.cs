@@ -54,7 +54,6 @@
             lbl_ID = new Label();
             label22 = new Label();
             label20 = new Label();
-            lbl_Expulsivos = new Label();
             lbl_NoExpulsivos = new Label();
             label1 = new Label();
             rb_PrioridadesExpulsivo = new RadioButton();
@@ -63,6 +62,7 @@
             rb_PrioridadesNoExpulsivo = new RadioButton();
             rb_SeleccionAleatoria = new RadioButton();
             rb_SJF = new RadioButton();
+            lbl_Expulsivos = new Label();
             rb_FCFS = new RadioButton();
             pnl_Generador = new Panel();
             pnl_Estadisticas = new Panel();
@@ -84,25 +84,25 @@
             label5 = new Label();
             label4 = new Label();
             np_Quantum = new NumericUpDown();
-            label21 = new Label();
+            lb_Quantum = new Label();
             np_MaxTiempoLlegada = new NumericUpDown();
             btn_Limpiar = new Button();
             btn_Simular = new Button();
             np_MinTiempoLlegada = new NumericUpDown();
-            label14 = new Label();
+            lb_TiempoLlegada = new Label();
             cmb_Tick = new ComboBox();
-            label13 = new Label();
+            lb_TiempoTick = new Label();
             np_Cantidad = new NumericUpDown();
-            label12 = new Label();
+            lb_Cantidad = new Label();
             np_MaxPrioridad = new NumericUpDown();
             np_MinPrioridad = new NumericUpDown();
-            label11 = new Label();
+            lb_Prioridad = new Label();
             np_MaxIOBurstTime = new NumericUpDown();
             np_MinIOBurstTime = new NumericUpDown();
-            label8 = new Label();
+            lb_BurstTimeIO = new Label();
             np_MaxBurstTime = new NumericUpDown();
             np_MinBurstTime = new NumericUpDown();
-            label3 = new Label();
+            lb_BurstTime = new Label();
             label2 = new Label();
             tableLayoutPanel3 = new TableLayoutPanel();
             tableLayoutPanel6 = new TableLayoutPanel();
@@ -110,8 +110,9 @@
             dataGridViewTextBoxColumn1 = new DataGridViewTextBoxColumn();
             dataGridViewTextBoxColumn2 = new DataGridViewTextBoxColumn();
             dataGridViewTextBoxColumn3 = new DataGridViewTextBoxColumn();
+            TiempoRestanteCPUBloqueo = new DataGridViewTextBoxColumn();
             dataGridViewTextBoxColumn4 = new DataGridViewTextBoxColumn();
-            dataGridViewTextBoxColumn5 = new DataGridViewTextBoxColumn();
+            PrioridadBloqueados = new DataGridViewTextBoxColumn();
             dataGridViewTextBoxColumn6 = new DataGridViewTextBoxColumn();
             panel3 = new Panel();
             label18 = new Label();
@@ -121,7 +122,7 @@
             dataGridViewTextBoxColumn8 = new DataGridViewTextBoxColumn();
             dataGridViewTextBoxColumn9 = new DataGridViewTextBoxColumn();
             dataGridViewTextBoxColumn10 = new DataGridViewTextBoxColumn();
-            dataGridViewTextBoxColumn11 = new DataGridViewTextBoxColumn();
+            PrioridadNuevos = new DataGridViewTextBoxColumn();
             dataGridViewTextBoxColumn12 = new DataGridViewTextBoxColumn();
             panel1 = new Panel();
             label32 = new Label();
@@ -130,6 +131,7 @@
             ID = new DataGridViewTextBoxColumn();
             TiempoLlegada = new DataGridViewTextBoxColumn();
             BurstTime = new DataGridViewTextBoxColumn();
+            TiempoRestanteCPU = new DataGridViewTextBoxColumn();
             IOBurstTime = new DataGridViewTextBoxColumn();
             Prioridad = new DataGridViewTextBoxColumn();
             Estado = new DataGridViewTextBoxColumn();
@@ -144,7 +146,7 @@
             dataGridViewTextBoxColumn17 = new DataGridViewTextBoxColumn();
             dataGridViewTextBoxColumn18 = new DataGridViewTextBoxColumn();
             dataGridViewTextBoxColumn19 = new DataGridViewTextBoxColumn();
-            dataGridViewTextBoxColumn20 = new DataGridViewTextBoxColumn();
+            PrioridadTerminados = new DataGridViewTextBoxColumn();
             dataGridViewTextBoxColumn21 = new DataGridViewTextBoxColumn();
             panel5 = new Panel();
             label19 = new Label();
@@ -504,18 +506,6 @@
             label20.TabIndex = 14;
             label20.Text = "Proceso actual";
             // 
-            // lbl_Expulsivos
-            // 
-            lbl_Expulsivos.Anchor = AnchorStyles.None;
-            lbl_Expulsivos.AutoSize = true;
-            lbl_Expulsivos.Font = new Font("Segoe UI Black", 11F, FontStyle.Bold, GraphicsUnit.Point, 0);
-            lbl_Expulsivos.ForeColor = Color.RoyalBlue;
-            lbl_Expulsivos.Location = new Point(521, 95);
-            lbl_Expulsivos.Name = "lbl_Expulsivos";
-            lbl_Expulsivos.Size = new Size(137, 30);
-            lbl_Expulsivos.TabIndex = 13;
-            lbl_Expulsivos.Text = "Expulsivos:";
-            // 
             // lbl_NoExpulsivos
             // 
             lbl_NoExpulsivos.Anchor = AnchorStyles.None;
@@ -615,6 +605,18 @@
             rb_SJF.Text = "Primero el trabajo más corto (SJF)";
             rb_SJF.UseVisualStyleBackColor = true;
             // 
+            // lbl_Expulsivos
+            // 
+            lbl_Expulsivos.Anchor = AnchorStyles.None;
+            lbl_Expulsivos.AutoSize = true;
+            lbl_Expulsivos.Font = new Font("Segoe UI Black", 11F, FontStyle.Bold, GraphicsUnit.Point, 0);
+            lbl_Expulsivos.ForeColor = Color.RoyalBlue;
+            lbl_Expulsivos.Location = new Point(521, 95);
+            lbl_Expulsivos.Name = "lbl_Expulsivos";
+            lbl_Expulsivos.Size = new Size(137, 30);
+            lbl_Expulsivos.TabIndex = 13;
+            lbl_Expulsivos.Text = "Expulsivos:";
+            // 
             // rb_FCFS
             // 
             rb_FCFS.Anchor = AnchorStyles.None;
@@ -632,25 +634,25 @@
             pnl_Generador.BorderStyle = BorderStyle.FixedSingle;
             pnl_Generador.Controls.Add(pnl_Estadisticas);
             pnl_Generador.Controls.Add(np_Quantum);
-            pnl_Generador.Controls.Add(label21);
+            pnl_Generador.Controls.Add(lb_Quantum);
             pnl_Generador.Controls.Add(np_MaxTiempoLlegada);
             pnl_Generador.Controls.Add(btn_Limpiar);
             pnl_Generador.Controls.Add(btn_Simular);
             pnl_Generador.Controls.Add(np_MinTiempoLlegada);
-            pnl_Generador.Controls.Add(label14);
+            pnl_Generador.Controls.Add(lb_TiempoLlegada);
             pnl_Generador.Controls.Add(cmb_Tick);
-            pnl_Generador.Controls.Add(label13);
+            pnl_Generador.Controls.Add(lb_TiempoTick);
             pnl_Generador.Controls.Add(np_Cantidad);
-            pnl_Generador.Controls.Add(label12);
+            pnl_Generador.Controls.Add(lb_Cantidad);
             pnl_Generador.Controls.Add(np_MaxPrioridad);
             pnl_Generador.Controls.Add(np_MinPrioridad);
-            pnl_Generador.Controls.Add(label11);
+            pnl_Generador.Controls.Add(lb_Prioridad);
             pnl_Generador.Controls.Add(np_MaxIOBurstTime);
             pnl_Generador.Controls.Add(np_MinIOBurstTime);
-            pnl_Generador.Controls.Add(label8);
+            pnl_Generador.Controls.Add(lb_BurstTimeIO);
             pnl_Generador.Controls.Add(np_MaxBurstTime);
             pnl_Generador.Controls.Add(np_MinBurstTime);
-            pnl_Generador.Controls.Add(label3);
+            pnl_Generador.Controls.Add(lb_BurstTime);
             pnl_Generador.Controls.Add(label2);
             pnl_Generador.Dock = DockStyle.Fill;
             pnl_Generador.Location = new Point(3, 382);
@@ -892,17 +894,17 @@
             np_Quantum.TabIndex = 38;
             np_Quantum.Value = new decimal(new int[] { 1, 0, 0, 0 });
             // 
-            // label21
+            // lb_Quantum
             // 
-            label21.Anchor = AnchorStyles.None;
-            label21.AutoSize = true;
-            label21.Font = new Font("Segoe UI Black", 9F, FontStyle.Bold);
-            label21.ForeColor = Color.RoyalBlue;
-            label21.Location = new Point(21, 359);
-            label21.Name = "label21";
-            label21.Size = new Size(94, 25);
-            label21.TabIndex = 37;
-            label21.Text = "Quantum";
+            lb_Quantum.Anchor = AnchorStyles.None;
+            lb_Quantum.AutoSize = true;
+            lb_Quantum.Font = new Font("Segoe UI Black", 9F, FontStyle.Bold);
+            lb_Quantum.ForeColor = Color.RoyalBlue;
+            lb_Quantum.Location = new Point(21, 359);
+            lb_Quantum.Name = "lb_Quantum";
+            lb_Quantum.Size = new Size(94, 25);
+            lb_Quantum.TabIndex = 37;
+            lb_Quantum.Text = "Quantum";
             // 
             // np_MaxTiempoLlegada
             // 
@@ -948,17 +950,17 @@
             np_MinTiempoLlegada.TabIndex = 33;
             toolTip.SetToolTip(np_MinTiempoLlegada, "MIn");
             // 
-            // label14
+            // lb_TiempoLlegada
             // 
-            label14.Anchor = AnchorStyles.None;
-            label14.AutoSize = true;
-            label14.Font = new Font("Segoe UI Black", 9F, FontStyle.Bold, GraphicsUnit.Point, 0);
-            label14.ForeColor = Color.RoyalBlue;
-            label14.Location = new Point(379, 265);
-            label14.Name = "label14";
-            label14.Size = new Size(177, 25);
-            label14.TabIndex = 32;
-            label14.Text = "Tiempo de llegada";
+            lb_TiempoLlegada.Anchor = AnchorStyles.None;
+            lb_TiempoLlegada.AutoSize = true;
+            lb_TiempoLlegada.Font = new Font("Segoe UI Black", 9F, FontStyle.Bold, GraphicsUnit.Point, 0);
+            lb_TiempoLlegada.ForeColor = Color.RoyalBlue;
+            lb_TiempoLlegada.Location = new Point(379, 265);
+            lb_TiempoLlegada.Name = "lb_TiempoLlegada";
+            lb_TiempoLlegada.Size = new Size(177, 25);
+            lb_TiempoLlegada.TabIndex = 32;
+            lb_TiempoLlegada.Text = "Tiempo de llegada";
             // 
             // cmb_Tick
             // 
@@ -970,17 +972,17 @@
             cmb_Tick.Size = new Size(198, 33);
             cmb_Tick.TabIndex = 31;
             // 
-            // label13
+            // lb_TiempoTick
             // 
-            label13.Anchor = AnchorStyles.None;
-            label13.AutoSize = true;
-            label13.Font = new Font("Segoe UI Black", 9F, FontStyle.Bold, GraphicsUnit.Point, 0);
-            label13.ForeColor = Color.RoyalBlue;
-            label13.Location = new Point(379, 163);
-            label13.Name = "label13";
-            label13.Size = new Size(151, 25);
-            label13.TabIndex = 30;
-            label13.Text = "Tiempo del tick";
+            lb_TiempoTick.Anchor = AnchorStyles.None;
+            lb_TiempoTick.AutoSize = true;
+            lb_TiempoTick.Font = new Font("Segoe UI Black", 9F, FontStyle.Bold, GraphicsUnit.Point, 0);
+            lb_TiempoTick.ForeColor = Color.RoyalBlue;
+            lb_TiempoTick.Location = new Point(379, 163);
+            lb_TiempoTick.Name = "lb_TiempoTick";
+            lb_TiempoTick.Size = new Size(151, 25);
+            lb_TiempoTick.TabIndex = 30;
+            lb_TiempoTick.Text = "Tiempo del tick";
             // 
             // np_Cantidad
             // 
@@ -993,17 +995,17 @@
             np_Cantidad.TabIndex = 29;
             np_Cantidad.Value = new decimal(new int[] { 2, 0, 0, 0 });
             // 
-            // label12
+            // lb_Cantidad
             // 
-            label12.Anchor = AnchorStyles.None;
-            label12.AutoSize = true;
-            label12.Font = new Font("Segoe UI Black", 9F, FontStyle.Bold, GraphicsUnit.Point, 0);
-            label12.ForeColor = Color.RoyalBlue;
-            label12.Location = new Point(379, 75);
-            label12.Name = "label12";
-            label12.Size = new Size(292, 25);
-            label12.TabIndex = 28;
-            label12.Text = "Cantidad de procesos a generar";
+            lb_Cantidad.Anchor = AnchorStyles.None;
+            lb_Cantidad.AutoSize = true;
+            lb_Cantidad.Font = new Font("Segoe UI Black", 9F, FontStyle.Bold, GraphicsUnit.Point, 0);
+            lb_Cantidad.ForeColor = Color.RoyalBlue;
+            lb_Cantidad.Location = new Point(379, 75);
+            lb_Cantidad.Name = "lb_Cantidad";
+            lb_Cantidad.Size = new Size(292, 25);
+            lb_Cantidad.TabIndex = 28;
+            lb_Cantidad.Text = "Cantidad de procesos a generar";
             // 
             // np_MaxPrioridad
             // 
@@ -1029,17 +1031,17 @@
             toolTip.SetToolTip(np_MinPrioridad, "MIn");
             np_MinPrioridad.Value = new decimal(new int[] { 1, 0, 0, 0 });
             // 
-            // label11
+            // lb_Prioridad
             // 
-            label11.Anchor = AnchorStyles.None;
-            label11.AutoSize = true;
-            label11.Font = new Font("Segoe UI Black", 9F, FontStyle.Bold);
-            label11.ForeColor = Color.RoyalBlue;
-            label11.Location = new Point(21, 265);
-            label11.Name = "label11";
-            label11.Size = new Size(97, 25);
-            label11.TabIndex = 23;
-            label11.Text = "Prioridad";
+            lb_Prioridad.Anchor = AnchorStyles.None;
+            lb_Prioridad.AutoSize = true;
+            lb_Prioridad.Font = new Font("Segoe UI Black", 9F, FontStyle.Bold);
+            lb_Prioridad.ForeColor = Color.RoyalBlue;
+            lb_Prioridad.Location = new Point(21, 265);
+            lb_Prioridad.Name = "lb_Prioridad";
+            lb_Prioridad.Size = new Size(97, 25);
+            lb_Prioridad.TabIndex = 23;
+            lb_Prioridad.Text = "Prioridad";
             // 
             // np_MaxIOBurstTime
             // 
@@ -1061,17 +1063,17 @@
             np_MinIOBurstTime.TabIndex = 19;
             toolTip.SetToolTip(np_MinIOBurstTime, "MIn");
             // 
-            // label8
+            // lb_BurstTimeIO
             // 
-            label8.Anchor = AnchorStyles.None;
-            label8.AutoSize = true;
-            label8.Font = new Font("Segoe UI Black", 9F, FontStyle.Bold);
-            label8.ForeColor = Color.RoyalBlue;
-            label8.Location = new Point(21, 163);
-            label8.Name = "label8";
-            label8.Size = new Size(143, 25);
-            label8.TabIndex = 18;
-            label8.Text = "I/O Burst Time";
+            lb_BurstTimeIO.Anchor = AnchorStyles.None;
+            lb_BurstTimeIO.AutoSize = true;
+            lb_BurstTimeIO.Font = new Font("Segoe UI Black", 9F, FontStyle.Bold);
+            lb_BurstTimeIO.ForeColor = Color.RoyalBlue;
+            lb_BurstTimeIO.Location = new Point(21, 163);
+            lb_BurstTimeIO.Name = "lb_BurstTimeIO";
+            lb_BurstTimeIO.Size = new Size(143, 25);
+            lb_BurstTimeIO.TabIndex = 18;
+            lb_BurstTimeIO.Text = "I/O Burst Time";
             // 
             // np_MaxBurstTime
             // 
@@ -1097,17 +1099,17 @@
             toolTip.SetToolTip(np_MinBurstTime, "Min");
             np_MinBurstTime.Value = new decimal(new int[] { 1, 0, 0, 0 });
             // 
-            // label3
+            // lb_BurstTime
             // 
-            label3.Anchor = AnchorStyles.None;
-            label3.AutoSize = true;
-            label3.Font = new Font("Segoe UI Black", 9F, FontStyle.Bold, GraphicsUnit.Point, 0);
-            label3.ForeColor = Color.RoyalBlue;
-            label3.Location = new Point(21, 75);
-            label3.Name = "label3";
-            label3.Size = new Size(109, 25);
-            label3.TabIndex = 13;
-            label3.Text = "Burst Time";
+            lb_BurstTime.Anchor = AnchorStyles.None;
+            lb_BurstTime.AutoSize = true;
+            lb_BurstTime.Font = new Font("Segoe UI Black", 9F, FontStyle.Bold, GraphicsUnit.Point, 0);
+            lb_BurstTime.ForeColor = Color.RoyalBlue;
+            lb_BurstTime.Location = new Point(21, 75);
+            lb_BurstTime.Name = "lb_BurstTime";
+            lb_BurstTime.Size = new Size(109, 25);
+            lb_BurstTime.TabIndex = 13;
+            lb_BurstTime.Text = "Burst Time";
             // 
             // label2
             // 
@@ -1160,7 +1162,7 @@
             // 
             Grid_Bloqueados.AutoSizeColumnsMode = DataGridViewAutoSizeColumnsMode.Fill;
             Grid_Bloqueados.ColumnHeadersHeightSizeMode = DataGridViewColumnHeadersHeightSizeMode.AutoSize;
-            Grid_Bloqueados.Columns.AddRange(new DataGridViewColumn[] { dataGridViewTextBoxColumn1, dataGridViewTextBoxColumn2, dataGridViewTextBoxColumn3, dataGridViewTextBoxColumn4, dataGridViewTextBoxColumn5, dataGridViewTextBoxColumn6 });
+            Grid_Bloqueados.Columns.AddRange(new DataGridViewColumn[] { dataGridViewTextBoxColumn1, dataGridViewTextBoxColumn2, dataGridViewTextBoxColumn3, TiempoRestanteCPUBloqueo, dataGridViewTextBoxColumn4, PrioridadBloqueados, dataGridViewTextBoxColumn6 });
             Grid_Bloqueados.Dock = DockStyle.Fill;
             Grid_Bloqueados.Location = new Point(3, 48);
             Grid_Bloqueados.Name = "Grid_Bloqueados";
@@ -1197,6 +1199,14 @@
             dataGridViewTextBoxColumn3.Name = "dataGridViewTextBoxColumn3";
             dataGridViewTextBoxColumn3.ReadOnly = true;
             // 
+            // TiempoRestanteCPUBloqueo
+            // 
+            TiempoRestanteCPUBloqueo.DataPropertyName = "TiempoRestanteCPU";
+            TiempoRestanteCPUBloqueo.HeaderText = "Tiempo Restante CPU";
+            TiempoRestanteCPUBloqueo.MinimumWidth = 8;
+            TiempoRestanteCPUBloqueo.Name = "TiempoRestanteCPUBloqueo";
+            TiempoRestanteCPUBloqueo.ReadOnly = true;
+            // 
             // dataGridViewTextBoxColumn4
             // 
             dataGridViewTextBoxColumn4.DataPropertyName = "IOBurstTime";
@@ -1205,13 +1215,13 @@
             dataGridViewTextBoxColumn4.Name = "dataGridViewTextBoxColumn4";
             dataGridViewTextBoxColumn4.ReadOnly = true;
             // 
-            // dataGridViewTextBoxColumn5
+            // PrioridadBloqueados
             // 
-            dataGridViewTextBoxColumn5.DataPropertyName = "Prioridad";
-            dataGridViewTextBoxColumn5.HeaderText = "Prioridad";
-            dataGridViewTextBoxColumn5.MinimumWidth = 8;
-            dataGridViewTextBoxColumn5.Name = "dataGridViewTextBoxColumn5";
-            dataGridViewTextBoxColumn5.ReadOnly = true;
+            PrioridadBloqueados.DataPropertyName = "Prioridad";
+            PrioridadBloqueados.HeaderText = "Prioridad";
+            PrioridadBloqueados.MinimumWidth = 8;
+            PrioridadBloqueados.Name = "PrioridadBloqueados";
+            PrioridadBloqueados.ReadOnly = true;
             // 
             // dataGridViewTextBoxColumn6
             // 
@@ -1261,7 +1271,7 @@
             // 
             Grid_Nuevos.AutoSizeColumnsMode = DataGridViewAutoSizeColumnsMode.Fill;
             Grid_Nuevos.ColumnHeadersHeightSizeMode = DataGridViewColumnHeadersHeightSizeMode.AutoSize;
-            Grid_Nuevos.Columns.AddRange(new DataGridViewColumn[] { dataGridViewTextBoxColumn7, dataGridViewTextBoxColumn8, dataGridViewTextBoxColumn9, dataGridViewTextBoxColumn10, dataGridViewTextBoxColumn11, dataGridViewTextBoxColumn12 });
+            Grid_Nuevos.Columns.AddRange(new DataGridViewColumn[] { dataGridViewTextBoxColumn7, dataGridViewTextBoxColumn8, dataGridViewTextBoxColumn9, dataGridViewTextBoxColumn10, PrioridadNuevos, dataGridViewTextBoxColumn12 });
             Grid_Nuevos.Dock = DockStyle.Fill;
             Grid_Nuevos.Location = new Point(3, 48);
             Grid_Nuevos.Name = "Grid_Nuevos";
@@ -1306,13 +1316,13 @@
             dataGridViewTextBoxColumn10.Name = "dataGridViewTextBoxColumn10";
             dataGridViewTextBoxColumn10.ReadOnly = true;
             // 
-            // dataGridViewTextBoxColumn11
+            // PrioridadNuevos
             // 
-            dataGridViewTextBoxColumn11.DataPropertyName = "Prioridad";
-            dataGridViewTextBoxColumn11.HeaderText = "Prioridad";
-            dataGridViewTextBoxColumn11.MinimumWidth = 8;
-            dataGridViewTextBoxColumn11.Name = "dataGridViewTextBoxColumn11";
-            dataGridViewTextBoxColumn11.ReadOnly = true;
+            PrioridadNuevos.DataPropertyName = "Prioridad";
+            PrioridadNuevos.HeaderText = "Prioridad";
+            PrioridadNuevos.MinimumWidth = 8;
+            PrioridadNuevos.Name = "PrioridadNuevos";
+            PrioridadNuevos.ReadOnly = true;
             // 
             // dataGridViewTextBoxColumn12
             // 
@@ -1363,7 +1373,7 @@
             // 
             Grid_Listo.AutoSizeColumnsMode = DataGridViewAutoSizeColumnsMode.Fill;
             Grid_Listo.ColumnHeadersHeightSizeMode = DataGridViewColumnHeadersHeightSizeMode.AutoSize;
-            Grid_Listo.Columns.AddRange(new DataGridViewColumn[] { ID, TiempoLlegada, BurstTime, IOBurstTime, Prioridad, Estado });
+            Grid_Listo.Columns.AddRange(new DataGridViewColumn[] { ID, TiempoLlegada, BurstTime, TiempoRestanteCPU, IOBurstTime, Prioridad, Estado });
             Grid_Listo.Dock = DockStyle.Fill;
             Grid_Listo.Location = new Point(3, 48);
             Grid_Listo.Name = "Grid_Listo";
@@ -1399,6 +1409,14 @@
             BurstTime.MinimumWidth = 8;
             BurstTime.Name = "BurstTime";
             BurstTime.ReadOnly = true;
+            // 
+            // TiempoRestanteCPU
+            // 
+            TiempoRestanteCPU.DataPropertyName = "TiempoRestanteCPU";
+            TiempoRestanteCPU.HeaderText = "Tiempo Restante CPU";
+            TiempoRestanteCPU.MinimumWidth = 8;
+            TiempoRestanteCPU.Name = "TiempoRestanteCPU";
+            TiempoRestanteCPU.ReadOnly = true;
             // 
             // IOBurstTime
             // 
@@ -1459,7 +1477,7 @@
             // 
             Grid_Terminados.AutoSizeColumnsMode = DataGridViewAutoSizeColumnsMode.Fill;
             Grid_Terminados.ColumnHeadersHeightSizeMode = DataGridViewColumnHeadersHeightSizeMode.AutoSize;
-            Grid_Terminados.Columns.AddRange(new DataGridViewColumn[] { dataGridViewTextBoxColumn13, dataGridViewTextBoxColumn14, dataGridViewTextBoxColumn15, dataGridViewTextBoxColumn16, dataGridViewTextBoxColumn17, dataGridViewTextBoxColumn18, dataGridViewTextBoxColumn19, dataGridViewTextBoxColumn20, dataGridViewTextBoxColumn21 });
+            Grid_Terminados.Columns.AddRange(new DataGridViewColumn[] { dataGridViewTextBoxColumn13, dataGridViewTextBoxColumn14, dataGridViewTextBoxColumn15, dataGridViewTextBoxColumn16, dataGridViewTextBoxColumn17, dataGridViewTextBoxColumn18, dataGridViewTextBoxColumn19, PrioridadTerminados, dataGridViewTextBoxColumn21 });
             Grid_Terminados.Dock = DockStyle.Fill;
             Grid_Terminados.Location = new Point(0, 44);
             Grid_Terminados.Name = "Grid_Terminados";
@@ -1528,13 +1546,13 @@
             dataGridViewTextBoxColumn19.Name = "dataGridViewTextBoxColumn19";
             dataGridViewTextBoxColumn19.ReadOnly = true;
             // 
-            // dataGridViewTextBoxColumn20
+            // PrioridadTerminados
             // 
-            dataGridViewTextBoxColumn20.DataPropertyName = "Prioridad";
-            dataGridViewTextBoxColumn20.HeaderText = "Prioridad";
-            dataGridViewTextBoxColumn20.MinimumWidth = 8;
-            dataGridViewTextBoxColumn20.Name = "dataGridViewTextBoxColumn20";
-            dataGridViewTextBoxColumn20.ReadOnly = true;
+            PrioridadTerminados.DataPropertyName = "Prioridad";
+            PrioridadTerminados.HeaderText = "Prioridad";
+            PrioridadTerminados.MinimumWidth = 8;
+            PrioridadTerminados.Name = "PrioridadTerminados";
+            PrioridadTerminados.ReadOnly = true;
             // 
             // dataGridViewTextBoxColumn21
             // 
@@ -1638,20 +1656,20 @@
         private Label label2;
         private Panel pnl_Estadisticas;
         private NumericUpDown np_MinBurstTime;
-        private Label label3;
+        private Label lb_BurstTime;
         private NumericUpDown np_MaxIOBurstTime;
         private NumericUpDown np_MinIOBurstTime;
-        private Label label8;
+        private Label lb_BurstTimeIO;
         private NumericUpDown np_MaxBurstTime;
         private NumericUpDown np_MaxPrioridad;
         private NumericUpDown np_MinPrioridad;
-        private Label label11;
+        private Label lb_Prioridad;
         private NumericUpDown np_Cantidad;
-        private Label label12;
+        private Label lb_Cantidad;
         private NumericUpDown np_MinTiempoLlegada;
-        private Label label14;
+        private Label lb_TiempoLlegada;
         private ComboBox cmb_Tick;
-        private Label label13;
+        private Label lb_TiempoTick;
         private Button btn_Limpiar;
         private Button btn_Simular;
         private ToolTip toolTip;
@@ -1701,7 +1719,7 @@
         private System.Windows.Forms.Timer timer;
         private NumericUpDown np_MaxTiempoLlegada;
         private NumericUpDown np_Quantum;
-        private Label label21;
+        private Label lb_Quantum;
         private TableLayoutPanel tableLayoutPanel6;
         private DataGridView Grid_Terminados;
         private DataGridViewTextBoxColumn TiempoEspera;
@@ -1709,6 +1727,20 @@
         private DataGridViewTextBoxColumn TickFinalizacion;
         private Panel panel3;
         private Panel panel4;
+        private Panel panel5;
+        private DataGridView Grid_Bloqueados;
+        private Label label18;
+        private DataGridView Grid_Nuevos;
+        private Label label32;
+        private DataGridView Grid_Listo;
+        private Label label15;
+        private Label label19;
+        private DataGridViewTextBoxColumn dataGridViewTextBoxColumn7;
+        private DataGridViewTextBoxColumn dataGridViewTextBoxColumn8;
+        private DataGridViewTextBoxColumn dataGridViewTextBoxColumn9;
+        private DataGridViewTextBoxColumn dataGridViewTextBoxColumn10;
+        private DataGridViewTextBoxColumn PrioridadNuevos;
+        private DataGridViewTextBoxColumn dataGridViewTextBoxColumn12;
         private DataGridViewTextBoxColumn dataGridViewTextBoxColumn13;
         private DataGridViewTextBoxColumn dataGridViewTextBoxColumn14;
         private DataGridViewTextBoxColumn dataGridViewTextBoxColumn15;
@@ -1716,33 +1748,21 @@
         private DataGridViewTextBoxColumn dataGridViewTextBoxColumn17;
         private DataGridViewTextBoxColumn dataGridViewTextBoxColumn18;
         private DataGridViewTextBoxColumn dataGridViewTextBoxColumn19;
-        private DataGridViewTextBoxColumn dataGridViewTextBoxColumn20;
+        private DataGridViewTextBoxColumn PrioridadTerminados;
         private DataGridViewTextBoxColumn dataGridViewTextBoxColumn21;
-        private Panel panel5;
-        private DataGridView Grid_Bloqueados;
         private DataGridViewTextBoxColumn dataGridViewTextBoxColumn1;
         private DataGridViewTextBoxColumn dataGridViewTextBoxColumn2;
         private DataGridViewTextBoxColumn dataGridViewTextBoxColumn3;
+        private DataGridViewTextBoxColumn TiempoRestanteCPUBloqueo;
         private DataGridViewTextBoxColumn dataGridViewTextBoxColumn4;
-        private DataGridViewTextBoxColumn dataGridViewTextBoxColumn5;
+        private DataGridViewTextBoxColumn PrioridadBloqueados;
         private DataGridViewTextBoxColumn dataGridViewTextBoxColumn6;
-        private Label label18;
-        private DataGridView Grid_Nuevos;
-        private DataGridViewTextBoxColumn dataGridViewTextBoxColumn7;
-        private DataGridViewTextBoxColumn dataGridViewTextBoxColumn8;
-        private DataGridViewTextBoxColumn dataGridViewTextBoxColumn9;
-        private DataGridViewTextBoxColumn dataGridViewTextBoxColumn10;
-        private DataGridViewTextBoxColumn dataGridViewTextBoxColumn11;
-        private DataGridViewTextBoxColumn dataGridViewTextBoxColumn12;
-        private Label label32;
-        private DataGridView Grid_Listo;
         private DataGridViewTextBoxColumn ID;
         private DataGridViewTextBoxColumn TiempoLlegada;
         private DataGridViewTextBoxColumn BurstTime;
+        private DataGridViewTextBoxColumn TiempoRestanteCPU;
         private DataGridViewTextBoxColumn IOBurstTime;
         private DataGridViewTextBoxColumn Prioridad;
         private DataGridViewTextBoxColumn Estado;
-        private Label label15;
-        private Label label19;
     }
 }
