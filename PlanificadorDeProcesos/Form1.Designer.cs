@@ -83,6 +83,7 @@
             lbl_UsoProcesador = new Label();
             label5 = new Label();
             label4 = new Label();
+            np_MaxTiempoLlegada = new NumericUpDown();
             btn_Limpiar = new Button();
             btn_Simular = new Button();
             np_MinTiempoLlegada = new NumericUpDown();
@@ -137,13 +138,15 @@
             label19 = new Label();
             toolTip = new ToolTip(components);
             timer = new System.Windows.Forms.Timer(components);
-            np_MaxTiempoLlegada = new NumericUpDown();
+            np_Quantum = new NumericUpDown();
+            label21 = new Label();
             tableLayoutPanel1.SuspendLayout();
             tableLayoutPanel2.SuspendLayout();
             pnl_Algoritmos.SuspendLayout();
             pnl_ProcesoActual.SuspendLayout();
             pnl_Generador.SuspendLayout();
             pnl_Estadisticas.SuspendLayout();
+            ((System.ComponentModel.ISupportInitialize)np_MaxTiempoLlegada).BeginInit();
             ((System.ComponentModel.ISupportInitialize)np_MinTiempoLlegada).BeginInit();
             ((System.ComponentModel.ISupportInitialize)np_Cantidad).BeginInit();
             ((System.ComponentModel.ISupportInitialize)np_MaxPrioridad).BeginInit();
@@ -162,7 +165,7 @@
             tableLayoutPanel6.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)Grid_Terminados).BeginInit();
             panel3.SuspendLayout();
-            ((System.ComponentModel.ISupportInitialize)np_MaxTiempoLlegada).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)np_Quantum).BeginInit();
             SuspendLayout();
             // 
             // tableLayoutPanel1
@@ -178,7 +181,7 @@
             tableLayoutPanel1.RowCount = 1;
             tableLayoutPanel1.RowStyles.Add(new RowStyle(SizeType.Percent, 100F));
             tableLayoutPanel1.RowStyles.Add(new RowStyle(SizeType.Absolute, 20F));
-            tableLayoutPanel1.Size = new Size(1959, 785);
+            tableLayoutPanel1.Size = new Size(1959, 822);
             tableLayoutPanel1.TabIndex = 0;
             // 
             // tableLayoutPanel2
@@ -191,10 +194,10 @@
             tableLayoutPanel2.Location = new Point(3, 3);
             tableLayoutPanel2.Name = "tableLayoutPanel2";
             tableLayoutPanel2.RowCount = 2;
-            tableLayoutPanel2.RowStyles.Add(new RowStyle(SizeType.Percent, 45.6996155F));
-            tableLayoutPanel2.RowStyles.Add(new RowStyle(SizeType.Percent, 54.3003845F));
+            tableLayoutPanel2.RowStyles.Add(new RowStyle(SizeType.Percent, 43.75F));
+            tableLayoutPanel2.RowStyles.Add(new RowStyle(SizeType.Percent, 56.25F));
             tableLayoutPanel2.RowStyles.Add(new RowStyle(SizeType.Absolute, 20F));
-            tableLayoutPanel2.Size = new Size(921, 779);
+            tableLayoutPanel2.Size = new Size(921, 816);
             tableLayoutPanel2.TabIndex = 0;
             // 
             // pnl_Algoritmos
@@ -214,11 +217,12 @@
             pnl_Algoritmos.Dock = DockStyle.Fill;
             pnl_Algoritmos.Location = new Point(3, 3);
             pnl_Algoritmos.Name = "pnl_Algoritmos";
-            pnl_Algoritmos.Size = new Size(915, 350);
+            pnl_Algoritmos.Size = new Size(915, 351);
             pnl_Algoritmos.TabIndex = 0;
             // 
             // pnl_ProcesoActual
             // 
+            pnl_ProcesoActual.Controls.Add(pnl_Estadisticas);
             pnl_ProcesoActual.Controls.Add(lbl_Estado);
             pnl_ProcesoActual.Controls.Add(label31);
             pnl_ProcesoActual.Controls.Add(lbl_TiempoEspera);
@@ -243,7 +247,7 @@
             pnl_ProcesoActual.Dock = DockStyle.Fill;
             pnl_ProcesoActual.Location = new Point(0, 0);
             pnl_ProcesoActual.Name = "pnl_ProcesoActual";
-            pnl_ProcesoActual.Size = new Size(913, 348);
+            pnl_ProcesoActual.Size = new Size(913, 349);
             pnl_ProcesoActual.TabIndex = 14;
             // 
             // lbl_Estado
@@ -580,7 +584,8 @@
             // pnl_Generador
             // 
             pnl_Generador.BorderStyle = BorderStyle.FixedSingle;
-            pnl_Generador.Controls.Add(pnl_Estadisticas);
+            pnl_Generador.Controls.Add(np_Quantum);
+            pnl_Generador.Controls.Add(label21);
             pnl_Generador.Controls.Add(np_MaxTiempoLlegada);
             pnl_Generador.Controls.Add(btn_Limpiar);
             pnl_Generador.Controls.Add(btn_Simular);
@@ -601,9 +606,9 @@
             pnl_Generador.Controls.Add(label3);
             pnl_Generador.Controls.Add(label2);
             pnl_Generador.Dock = DockStyle.Fill;
-            pnl_Generador.Location = new Point(3, 359);
+            pnl_Generador.Location = new Point(3, 360);
             pnl_Generador.Name = "pnl_Generador";
-            pnl_Generador.Size = new Size(915, 417);
+            pnl_Generador.Size = new Size(915, 453);
             pnl_Generador.TabIndex = 1;
             // 
             // pnl_Estadisticas
@@ -626,8 +631,7 @@
             pnl_Estadisticas.Controls.Add(lbl_UsoProcesador);
             pnl_Estadisticas.Controls.Add(label5);
             pnl_Estadisticas.Controls.Add(label4);
-            pnl_Estadisticas.Dock = DockStyle.Fill;
-            pnl_Estadisticas.Location = new Point(0, 0);
+            pnl_Estadisticas.Location = new Point(701, 66);
             pnl_Estadisticas.Name = "pnl_Estadisticas";
             pnl_Estadisticas.Size = new Size(913, 415);
             pnl_Estadisticas.TabIndex = 2;
@@ -812,6 +816,15 @@
             label4.TabIndex = 13;
             label4.Text = "Estadísticas algoritmo";
             // 
+            // np_MaxTiempoLlegada
+            // 
+            np_MaxTiempoLlegada.Location = new Point(530, 304);
+            np_MaxTiempoLlegada.Maximum = new decimal(new int[] { 20, 0, 0, 0 });
+            np_MaxTiempoLlegada.Name = "np_MaxTiempoLlegada";
+            np_MaxTiempoLlegada.Size = new Size(90, 31);
+            np_MaxTiempoLlegada.TabIndex = 36;
+            toolTip.SetToolTip(np_MaxTiempoLlegada, "Max");
+            // 
             // btn_Limpiar
             // 
             btn_Limpiar.Location = new Point(729, 175);
@@ -835,7 +848,7 @@
             // 
             // np_MinTiempoLlegada
             // 
-            np_MinTiempoLlegada.Location = new Point(379, 327);
+            np_MinTiempoLlegada.Location = new Point(379, 304);
             np_MinTiempoLlegada.Maximum = new decimal(new int[] { 20, 0, 0, 0 });
             np_MinTiempoLlegada.Name = "np_MinTiempoLlegada";
             np_MinTiempoLlegada.Size = new Size(90, 31);
@@ -847,7 +860,7 @@
             label14.AutoSize = true;
             label14.Font = new Font("Segoe UI Black", 9F, FontStyle.Bold, GraphicsUnit.Point, 0);
             label14.ForeColor = Color.RoyalBlue;
-            label14.Location = new Point(379, 288);
+            label14.Location = new Point(379, 265);
             label14.Name = "label14";
             label14.Size = new Size(177, 25);
             label14.TabIndex = 32;
@@ -857,7 +870,7 @@
             // 
             cmb_Tick.DropDownStyle = ComboBoxStyle.DropDownList;
             cmb_Tick.FormattingEnabled = true;
-            cmb_Tick.Location = new Point(379, 220);
+            cmb_Tick.Location = new Point(379, 200);
             cmb_Tick.Name = "cmb_Tick";
             cmb_Tick.Size = new Size(198, 33);
             cmb_Tick.TabIndex = 31;
@@ -867,7 +880,7 @@
             label13.AutoSize = true;
             label13.Font = new Font("Segoe UI Black", 9F, FontStyle.Bold, GraphicsUnit.Point, 0);
             label13.ForeColor = Color.RoyalBlue;
-            label13.Location = new Point(379, 183);
+            label13.Location = new Point(379, 163);
             label13.Name = "label13";
             label13.Size = new Size(151, 25);
             label13.TabIndex = 30;
@@ -896,7 +909,7 @@
             // 
             // np_MaxPrioridad
             // 
-            np_MaxPrioridad.Location = new Point(176, 327);
+            np_MaxPrioridad.Location = new Point(176, 304);
             np_MaxPrioridad.Maximum = new decimal(new int[] { 20, 0, 0, 0 });
             np_MaxPrioridad.Minimum = new decimal(new int[] { 1, 0, 0, 0 });
             np_MaxPrioridad.Name = "np_MaxPrioridad";
@@ -907,7 +920,7 @@
             // 
             // np_MinPrioridad
             // 
-            np_MinPrioridad.Location = new Point(21, 327);
+            np_MinPrioridad.Location = new Point(21, 304);
             np_MinPrioridad.Maximum = new decimal(new int[] { 20, 0, 0, 0 });
             np_MinPrioridad.Minimum = new decimal(new int[] { 1, 0, 0, 0 });
             np_MinPrioridad.Name = "np_MinPrioridad";
@@ -921,7 +934,7 @@
             label11.AutoSize = true;
             label11.Font = new Font("Segoe UI Black", 9F, FontStyle.Bold);
             label11.ForeColor = Color.RoyalBlue;
-            label11.Location = new Point(21, 288);
+            label11.Location = new Point(21, 265);
             label11.Name = "label11";
             label11.Size = new Size(97, 25);
             label11.TabIndex = 23;
@@ -929,7 +942,7 @@
             // 
             // np_MaxIOBurstTime
             // 
-            np_MaxIOBurstTime.Location = new Point(176, 222);
+            np_MaxIOBurstTime.Location = new Point(176, 202);
             np_MaxIOBurstTime.Maximum = new decimal(new int[] { 20, 0, 0, 0 });
             np_MaxIOBurstTime.Name = "np_MaxIOBurstTime";
             np_MaxIOBurstTime.Size = new Size(90, 31);
@@ -938,7 +951,7 @@
             // 
             // np_MinIOBurstTime
             // 
-            np_MinIOBurstTime.Location = new Point(21, 222);
+            np_MinIOBurstTime.Location = new Point(21, 202);
             np_MinIOBurstTime.Maximum = new decimal(new int[] { 20, 0, 0, 0 });
             np_MinIOBurstTime.Name = "np_MinIOBurstTime";
             np_MinIOBurstTime.Size = new Size(90, 31);
@@ -950,7 +963,7 @@
             label8.AutoSize = true;
             label8.Font = new Font("Segoe UI Black", 9F, FontStyle.Bold);
             label8.ForeColor = Color.RoyalBlue;
-            label8.Location = new Point(21, 183);
+            label8.Location = new Point(21, 163);
             label8.Name = "label8";
             label8.Size = new Size(143, 25);
             label8.TabIndex = 18;
@@ -1015,7 +1028,7 @@
             tableLayoutPanel3.RowStyles.Add(new RowStyle(SizeType.Percent, 33.3333321F));
             tableLayoutPanel3.RowStyles.Add(new RowStyle(SizeType.Percent, 33.3333321F));
             tableLayoutPanel3.RowStyles.Add(new RowStyle(SizeType.Percent, 33.3333321F));
-            tableLayoutPanel3.Size = new Size(1026, 779);
+            tableLayoutPanel3.Size = new Size(1026, 816);
             tableLayoutPanel3.TabIndex = 1;
             // 
             // tableLayoutPanel4
@@ -1030,7 +1043,7 @@
             tableLayoutPanel4.RowCount = 2;
             tableLayoutPanel4.RowStyles.Add(new RowStyle(SizeType.Absolute, 45F));
             tableLayoutPanel4.RowStyles.Add(new RowStyle(SizeType.Percent, 100F));
-            tableLayoutPanel4.Size = new Size(1020, 253);
+            tableLayoutPanel4.Size = new Size(1020, 265);
             tableLayoutPanel4.TabIndex = 3;
             // 
             // Grid_Listo
@@ -1047,7 +1060,7 @@
             Grid_Listo.SelectionMode = DataGridViewSelectionMode.FullRowSelect;
             Grid_Listo.ShowEditingIcon = false;
             Grid_Listo.ShowRowErrors = false;
-            Grid_Listo.Size = new Size(1014, 202);
+            Grid_Listo.Size = new Size(1014, 214);
             Grid_Listo.TabIndex = 0;
             // 
             // ID
@@ -1126,12 +1139,12 @@
             tableLayoutPanel5.Controls.Add(Grid_Bloqueados, 0, 1);
             tableLayoutPanel5.Controls.Add(panel2, 0, 0);
             tableLayoutPanel5.Dock = DockStyle.Fill;
-            tableLayoutPanel5.Location = new Point(3, 262);
+            tableLayoutPanel5.Location = new Point(3, 274);
             tableLayoutPanel5.Name = "tableLayoutPanel5";
             tableLayoutPanel5.RowCount = 2;
             tableLayoutPanel5.RowStyles.Add(new RowStyle(SizeType.Absolute, 45F));
             tableLayoutPanel5.RowStyles.Add(new RowStyle(SizeType.Percent, 100F));
-            tableLayoutPanel5.Size = new Size(1020, 253);
+            tableLayoutPanel5.Size = new Size(1020, 265);
             tableLayoutPanel5.TabIndex = 4;
             // 
             // Grid_Bloqueados
@@ -1148,7 +1161,7 @@
             Grid_Bloqueados.SelectionMode = DataGridViewSelectionMode.FullRowSelect;
             Grid_Bloqueados.ShowEditingIcon = false;
             Grid_Bloqueados.ShowRowErrors = false;
-            Grid_Bloqueados.Size = new Size(1014, 202);
+            Grid_Bloqueados.Size = new Size(1014, 214);
             Grid_Bloqueados.TabIndex = 3;
             // 
             // dataGridViewTextBoxColumn1
@@ -1227,12 +1240,12 @@
             tableLayoutPanel6.Controls.Add(Grid_Terminados, 0, 1);
             tableLayoutPanel6.Controls.Add(panel3, 0, 0);
             tableLayoutPanel6.Dock = DockStyle.Fill;
-            tableLayoutPanel6.Location = new Point(3, 521);
+            tableLayoutPanel6.Location = new Point(3, 545);
             tableLayoutPanel6.Name = "tableLayoutPanel6";
             tableLayoutPanel6.RowCount = 2;
             tableLayoutPanel6.RowStyles.Add(new RowStyle(SizeType.Absolute, 45F));
             tableLayoutPanel6.RowStyles.Add(new RowStyle(SizeType.Percent, 100F));
-            tableLayoutPanel6.Size = new Size(1020, 255);
+            tableLayoutPanel6.Size = new Size(1020, 268);
             tableLayoutPanel6.TabIndex = 5;
             // 
             // Grid_Terminados
@@ -1249,7 +1262,7 @@
             Grid_Terminados.SelectionMode = DataGridViewSelectionMode.FullRowSelect;
             Grid_Terminados.ShowEditingIcon = false;
             Grid_Terminados.ShowRowErrors = false;
-            Grid_Terminados.Size = new Size(1014, 204);
+            Grid_Terminados.Size = new Size(1014, 217);
             Grid_Terminados.TabIndex = 4;
             // 
             // dataGridViewTextBoxColumn7
@@ -1348,20 +1361,33 @@
             // 
             timer.Tick += timer_Tick;
             // 
-            // np_MaxTiempoLlegada
+            // np_Quantum
             // 
-            np_MaxTiempoLlegada.Location = new Point(530, 327);
-            np_MaxTiempoLlegada.Maximum = new decimal(new int[] { 20, 0, 0, 0 });
-            np_MaxTiempoLlegada.Name = "np_MaxTiempoLlegada";
-            np_MaxTiempoLlegada.Size = new Size(90, 31);
-            np_MaxTiempoLlegada.TabIndex = 36;
-            toolTip.SetToolTip(np_MaxTiempoLlegada, "Max");
+            np_Quantum.Location = new Point(21, 398);
+            np_Quantum.Maximum = new decimal(new int[] { 20, 0, 0, 0 });
+            np_Quantum.Minimum = new decimal(new int[] { 1, 0, 0, 0 });
+            np_Quantum.Name = "np_Quantum";
+            np_Quantum.Size = new Size(90, 31);
+            np_Quantum.TabIndex = 38;
+            toolTip.SetToolTip(np_Quantum, "MIn");
+            np_Quantum.Value = new decimal(new int[] { 1, 0, 0, 0 });
+            // 
+            // label21
+            // 
+            label21.AutoSize = true;
+            label21.Font = new Font("Segoe UI Black", 9F, FontStyle.Bold);
+            label21.ForeColor = Color.RoyalBlue;
+            label21.Location = new Point(21, 359);
+            label21.Name = "label21";
+            label21.Size = new Size(94, 25);
+            label21.TabIndex = 37;
+            label21.Text = "Quantum";
             // 
             // Form1
             // 
             AutoScaleDimensions = new SizeF(10F, 25F);
             AutoScaleMode = AutoScaleMode.Font;
-            ClientSize = new Size(1959, 785);
+            ClientSize = new Size(1959, 822);
             Controls.Add(tableLayoutPanel1);
             Name = "Form1";
             Text = "Planificador de procesos";
@@ -1376,6 +1402,7 @@
             pnl_Generador.PerformLayout();
             pnl_Estadisticas.ResumeLayout(false);
             pnl_Estadisticas.PerformLayout();
+            ((System.ComponentModel.ISupportInitialize)np_MaxTiempoLlegada).EndInit();
             ((System.ComponentModel.ISupportInitialize)np_MinTiempoLlegada).EndInit();
             ((System.ComponentModel.ISupportInitialize)np_Cantidad).EndInit();
             ((System.ComponentModel.ISupportInitialize)np_MaxPrioridad).EndInit();
@@ -1397,7 +1424,7 @@
             ((System.ComponentModel.ISupportInitialize)Grid_Terminados).EndInit();
             panel3.ResumeLayout(false);
             panel3.PerformLayout();
-            ((System.ComponentModel.ISupportInitialize)np_MaxTiempoLlegada).EndInit();
+            ((System.ComponentModel.ISupportInitialize)np_Quantum).EndInit();
             ResumeLayout(false);
         }
 
@@ -1512,5 +1539,7 @@
         private DataGridViewTextBoxColumn dataGridViewTextBoxColumn11;
         private DataGridViewTextBoxColumn dataGridViewTextBoxColumn12;
         private NumericUpDown np_MaxTiempoLlegada;
+        private NumericUpDown np_Quantum;
+        private Label label21;
     }
 }

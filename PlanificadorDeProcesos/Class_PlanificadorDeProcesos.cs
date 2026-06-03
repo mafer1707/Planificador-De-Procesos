@@ -401,6 +401,20 @@ namespace PlanificadorDeProcesos
             }
         }
 
+        private int _np_Quantum;
+        public int np_Quantum
+        {
+            get { return _np_Quantum; }
+            set
+            {
+                if (_np_Quantum != value)
+                {
+                    _np_Quantum = value;
+                    OnPropertyChanged();
+                }
+            }
+        }
+
         private string _lbl_UsoProcesador;
         public string lbl_UsoProcesador
         {

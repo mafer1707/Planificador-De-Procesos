@@ -80,6 +80,7 @@ namespace PlanificadorDeProcesos
             cmb_Tick.DataBindings.Add("SelectedValue", CA.FormData, nameof(CAT.FormData.cmb_Tick), false, DataSourceUpdateMode.OnPropertyChanged);         
             np_MinTiempoLlegada.DataBindings.Add("Value", CA.FormData, nameof(CAT.FormData.np_MinTiempoLlegada), false, DataSourceUpdateMode.OnPropertyChanged);
             np_MaxTiempoLlegada.DataBindings.Add("Value", CA.FormData, nameof(CAT.FormData.np_MaxTiempoLlegada), false, DataSourceUpdateMode.OnPropertyChanged);
+            np_Quantum.DataBindings.Add("Value", CA.FormData, nameof(CAT.FormData.np_Quantum), false, DataSourceUpdateMode.OnPropertyChanged);
 
             //Panel Estadisticas
             lbl_UsoProcesador.DataBindings.Add("Text", CA.FormData, nameof(CAT.FormData.lbl_UsoProcesador), false, DataSourceUpdateMode.OnPropertyChanged);
@@ -105,7 +106,9 @@ namespace PlanificadorDeProcesos
 
         private int tickActual = 0;
         private int ticksCPUOcupada = 0;
-        Random generadorAleatorio = new Random();
+        private int quantumRestanteActual = 0;
+        private Random generadorAleatorio = new Random();
+
         private void timer_Tick(object sender, EventArgs e)
         {
             for (int i = CA.ProcesosNuevos.Count - 1; i >= 0; i--)
@@ -132,17 +135,53 @@ namespace PlanificadorDeProcesos
                 }
             }
 
+            # region Control de expulsion del SRTF y prioridad expulsiva
+
+            if (CA.ProcesoEnCPU != null && CA.ProcesosListos.Count > 0)
+            {
+                if (algoritmoSeleccionado == AlgoritmoPlanificacion.SRTF)
+                {
+                    var mejorEnCola = CA.ProcesosListos.OrderBy(p => p.TiempoRestanteCPU).ThenBy(p => p.TiempoLlegada).First();
+
+                    if (mejorEnCola.TiempoRestanteCPU < CA.ProcesoEnCPU.TiempoRestanteCPU)
+                    {
+                        CA.ProcesoEnCPU.Estado = PlanificadorDeProcesos.Estado.Listo;
+                        CA.ProcesosListos.Add(CA.ProcesoEnCPU); 
+                        CA.ProcesoEnCPU = null; 
+                    }
+                }
+
+                else if (algoritmoSeleccionado == AlgoritmoPlanificacion.PrioridadExpulsiva)
+                {
+                    var mejorEnCola = CA.ProcesosListos.OrderBy(p => p.Prioridad).ThenBy(p => p.TiempoLlegada).First();
+
+                    if (mejorEnCola.Prioridad < CA.ProcesoEnCPU.Prioridad)
+                    {
+                        CA.ProcesoEnCPU.Estado = PlanificadorDeProcesos.Estado.Listo;
+                        CA.ProcesosListos.Add(CA.ProcesoEnCPU);
+                        CA.ProcesoEnCPU = null; 
+                    }
+                }
+            }
+
+            #endregion
+
+            #region Trabajo de la CPU
+
             if (CA.ProcesoEnCPU != null)
             {
                 CA.ProcesoEnCPU.TiempoRestanteCPU--;
                 ticksCPUOcupada++;
 
+                if (algoritmoSeleccionado == AlgoritmoPlanificacion.RoundRobin)
+                {
+                    quantumRestanteActual--;
+                }
+
                 int momentoDeIO = CA.ProcesoEnCPU.BurstTime / 2;
                 if (momentoDeIO == 0) momentoDeIO = 1;
 
-                if (CA.ProcesoEnCPU.IOBurstTime > 0 &&
-                    !CA.ProcesoEnCPU.YaHizoIO &&
-                    CA.ProcesoEnCPU.TiempoRestanteCPU == momentoDeIO)
+                if (CA.ProcesoEnCPU.IOBurstTime > 0 && !CA.ProcesoEnCPU.YaHizoIO && CA.ProcesoEnCPU.TiempoRestanteCPU == momentoDeIO)
                 {
                     CA.ProcesoEnCPU.Estado = PlanificadorDeProcesos.Estado.Bloqueado;
                     CA.ProcesosBloqueados.Add(CA.ProcesoEnCPU);
@@ -157,7 +196,18 @@ namespace PlanificadorDeProcesos
                     CA.ProcesosTerminados.Add(CA.ProcesoEnCPU);
                     CA.ProcesoEnCPU = null;
                 }
+
+                else if (algoritmoSeleccionado == AlgoritmoPlanificacion.RoundRobin && quantumRestanteActual == 0)
+                {
+                    CA.ProcesoEnCPU.Estado = PlanificadorDeProcesos.Estado.Listo;
+                    CA.ProcesosListos.Add(CA.ProcesoEnCPU);
+                    CA.ProcesoEnCPU = null;
+                }
             }
+
+            #endregion
+
+            #region Asignacion de la CPU (Algoritmos de planificacion)
 
             if (CA.ProcesoEnCPU == null && CA.ProcesosListos.Count > 0)
             {
@@ -186,12 +236,31 @@ namespace PlanificadorDeProcesos
                         CA.ProcesoEnCPU = procesoPrioritario;
                         CA.ProcesosListos.Remove(procesoPrioritario);
                         break;
+
+                    case AlgoritmoPlanificacion.RoundRobin:
+                        CA.ProcesoEnCPU = CA.ProcesosListos[0];
+                        CA.ProcesosListos.RemoveAt(0);
+                        quantumRestanteActual = CA.FormData.np_Quantum;
+                        break;
+
+                    case AlgoritmoPlanificacion.SRTF:
+                        var masCortoSRTF = CA.ProcesosListos.OrderBy(p => p.TiempoRestanteCPU).ThenBy(p => p.TiempoLlegada).First();
+                        CA.ProcesoEnCPU = masCortoSRTF;
+                        CA.ProcesosListos.Remove(masCortoSRTF);
+                        break;
+
+                    case AlgoritmoPlanificacion.PrioridadExpulsiva:
+                        var prioritarioExpulsivo = CA.ProcesosListos.OrderBy(p => p.Prioridad).ThenBy(p => p.TiempoLlegada).First();
+                        CA.ProcesoEnCPU = prioritarioExpulsivo;
+                        CA.ProcesosListos.Remove(prioritarioExpulsivo);
+                        break;
                 }
-                
-                
+                         
                 CA.ProcesoEnCPU.Estado = PlanificadorDeProcesos.Estado.Ejecutando;
               
             }
+
+            #endregion
 
             foreach (var p in CA.ProcesosListos)
             {
