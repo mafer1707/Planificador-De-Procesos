@@ -29,6 +29,7 @@
         private void InitializeComponent()
         {
             components = new System.ComponentModel.Container();
+            System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(Form1));
             tableLayoutPanel1 = new TableLayoutPanel();
             tableLayoutPanel2 = new TableLayoutPanel();
             pnl_Algoritmos = new Panel();
@@ -662,7 +663,6 @@
             // 
             // pnl_Estadisticas
             // 
-            pnl_Estadisticas.BorderStyle = BorderStyle.FixedSingle;
             pnl_Estadisticas.Controls.Add(btn_Reiniciar);
             pnl_Estadisticas.Controls.Add(btn_CambiarAlgoritmo);
             pnl_Estadisticas.Controls.Add(lbl_TiempoTotal);
@@ -689,24 +689,30 @@
             // btn_Reiniciar
             // 
             btn_Reiniciar.Anchor = AnchorStyles.None;
-            btn_Reiniciar.Location = new Point(432, 362);
+            btn_Reiniciar.Image = (Image)resources.GetObject("btn_Reiniciar.Image");
+            btn_Reiniciar.ImageAlign = ContentAlignment.TopCenter;
+            btn_Reiniciar.Location = new Point(433, 363);
             btn_Reiniciar.Name = "btn_Reiniciar";
             btn_Reiniciar.Padding = new Padding(0, 2, 0, 2);
-            btn_Reiniciar.Size = new Size(199, 48);
+            btn_Reiniciar.Size = new Size(199, 74);
             btn_Reiniciar.TabIndex = 29;
             btn_Reiniciar.Text = "Reiniciar prueba";
+            btn_Reiniciar.TextAlign = ContentAlignment.BottomCenter;
             btn_Reiniciar.UseVisualStyleBackColor = true;
             btn_Reiniciar.Click += btn_Reiniciar_Click;
             // 
             // btn_CambiarAlgoritmo
             // 
             btn_CambiarAlgoritmo.Anchor = AnchorStyles.None;
-            btn_CambiarAlgoritmo.Location = new Point(216, 362);
+            btn_CambiarAlgoritmo.Image = (Image)resources.GetObject("btn_CambiarAlgoritmo.Image");
+            btn_CambiarAlgoritmo.ImageAlign = ContentAlignment.TopCenter;
+            btn_CambiarAlgoritmo.Location = new Point(217, 363);
             btn_CambiarAlgoritmo.Name = "btn_CambiarAlgoritmo";
             btn_CambiarAlgoritmo.Padding = new Padding(0, 2, 0, 2);
-            btn_CambiarAlgoritmo.Size = new Size(199, 48);
+            btn_CambiarAlgoritmo.Size = new Size(199, 74);
             btn_CambiarAlgoritmo.TabIndex = 28;
             btn_CambiarAlgoritmo.Text = "Cambiar algoritmo";
+            btn_CambiarAlgoritmo.TextAlign = ContentAlignment.BottomCenter;
             btn_CambiarAlgoritmo.UseVisualStyleBackColor = true;
             btn_CambiarAlgoritmo.Click += btn_CambiarAlgoritmo_Click;
             // 
@@ -715,7 +721,7 @@
             lbl_TiempoTotal.Anchor = AnchorStyles.None;
             lbl_TiempoTotal.AutoSize = true;
             lbl_TiempoTotal.Font = new Font("Segoe UI", 9F);
-            lbl_TiempoTotal.Location = new Point(594, 236);
+            lbl_TiempoTotal.Location = new Point(595, 237);
             lbl_TiempoTotal.Name = "lbl_TiempoTotal";
             lbl_TiempoTotal.Size = new Size(59, 25);
             lbl_TiempoTotal.TabIndex = 27;
@@ -727,7 +733,7 @@
             label16.AutoSize = true;
             label16.Font = new Font("Segoe UI", 9F, FontStyle.Bold);
             label16.ForeColor = Color.RoyalBlue;
-            label16.Location = new Point(450, 236);
+            label16.Location = new Point(451, 237);
             label16.Name = "label16";
             label16.Size = new Size(121, 25);
             label16.TabIndex = 26;
@@ -738,7 +744,7 @@
             lbl_ProcesosPorPaso.Anchor = AnchorStyles.None;
             lbl_ProcesosPorPaso.AutoSize = true;
             lbl_ProcesosPorPaso.Font = new Font("Segoe UI", 9F);
-            lbl_ProcesosPorPaso.Location = new Point(779, 184);
+            lbl_ProcesosPorPaso.Location = new Point(780, 185);
             lbl_ProcesosPorPaso.Name = "lbl_ProcesosPorPaso";
             lbl_ProcesosPorPaso.Size = new Size(59, 25);
             lbl_ProcesosPorPaso.TabIndex = 25;
@@ -750,7 +756,7 @@
             label17.AutoSize = true;
             label17.Font = new Font("Segoe UI", 9F, FontStyle.Bold);
             label17.ForeColor = Color.RoyalBlue;
-            label17.Location = new Point(450, 182);
+            label17.Location = new Point(451, 183);
             label17.Name = "label17";
             label17.Size = new Size(317, 25);
             label17.TabIndex = 24;
@@ -761,7 +767,7 @@
             lbl_ProcesosCompletados.Anchor = AnchorStyles.None;
             lbl_ProcesosCompletados.AutoSize = true;
             lbl_ProcesosCompletados.Font = new Font("Segoe UI", 9F);
-            lbl_ProcesosCompletados.Location = new Point(757, 127);
+            lbl_ProcesosCompletados.Location = new Point(758, 128);
             lbl_ProcesosCompletados.Name = "lbl_ProcesosCompletados";
             lbl_ProcesosCompletados.Size = new Size(59, 25);
             lbl_ProcesosCompletados.TabIndex = 23;
@@ -773,7 +779,7 @@
             label10.AutoSize = true;
             label10.Font = new Font("Segoe UI", 9F, FontStyle.Bold);
             label10.ForeColor = Color.RoyalBlue;
-            label10.Location = new Point(450, 127);
+            label10.Location = new Point(451, 128);
             label10.Name = "label10";
             label10.Size = new Size(248, 25);
             label10.TabIndex = 22;
@@ -784,7 +790,7 @@
             lbl_TiempoPromEjecucion.Anchor = AnchorStyles.None;
             lbl_TiempoPromEjecucion.AutoSize = true;
             lbl_TiempoPromEjecucion.Font = new Font("Segoe UI", 9F);
-            lbl_TiempoPromEjecucion.Location = new Point(309, 291);
+            lbl_TiempoPromEjecucion.Location = new Point(310, 292);
             lbl_TiempoPromEjecucion.Name = "lbl_TiempoPromEjecucion";
             lbl_TiempoPromEjecucion.Size = new Size(59, 25);
             lbl_TiempoPromEjecucion.TabIndex = 21;
@@ -796,7 +802,7 @@
             label6.AutoSize = true;
             label6.Font = new Font("Segoe UI", 9F, FontStyle.Bold);
             label6.ForeColor = Color.RoyalBlue;
-            label6.Location = new Point(21, 291);
+            label6.Location = new Point(22, 292);
             label6.Name = "label6";
             label6.Size = new Size(275, 25);
             label6.TabIndex = 20;
@@ -807,7 +813,7 @@
             lbl_TiempoPromBloqueo.Anchor = AnchorStyles.None;
             lbl_TiempoPromBloqueo.AutoSize = true;
             lbl_TiempoPromBloqueo.Font = new Font("Segoe UI", 9F);
-            lbl_TiempoPromBloqueo.Location = new Point(309, 232);
+            lbl_TiempoPromBloqueo.Location = new Point(310, 233);
             lbl_TiempoPromBloqueo.Name = "lbl_TiempoPromBloqueo";
             lbl_TiempoPromBloqueo.Size = new Size(59, 25);
             lbl_TiempoPromBloqueo.TabIndex = 19;
@@ -819,7 +825,7 @@
             label9.AutoSize = true;
             label9.Font = new Font("Segoe UI", 9F, FontStyle.Bold);
             label9.ForeColor = Color.RoyalBlue;
-            label9.Location = new Point(21, 232);
+            label9.Location = new Point(22, 233);
             label9.Name = "label9";
             label9.Size = new Size(264, 25);
             label9.TabIndex = 18;
@@ -830,7 +836,7 @@
             lbl_TiempoPromEspera.Anchor = AnchorStyles.None;
             lbl_TiempoPromEspera.AutoSize = true;
             lbl_TiempoPromEspera.Font = new Font("Segoe UI", 9F);
-            lbl_TiempoPromEspera.Location = new Point(309, 181);
+            lbl_TiempoPromEspera.Location = new Point(310, 182);
             lbl_TiempoPromEspera.Name = "lbl_TiempoPromEspera";
             lbl_TiempoPromEspera.Size = new Size(59, 25);
             lbl_TiempoPromEspera.TabIndex = 17;
@@ -842,7 +848,7 @@
             label7.AutoSize = true;
             label7.Font = new Font("Segoe UI", 9F, FontStyle.Bold);
             label7.ForeColor = Color.RoyalBlue;
-            label7.Location = new Point(21, 181);
+            label7.Location = new Point(22, 182);
             label7.Name = "label7";
             label7.Size = new Size(250, 25);
             label7.TabIndex = 16;
@@ -853,7 +859,7 @@
             lbl_UsoProcesador.Anchor = AnchorStyles.None;
             lbl_UsoProcesador.AutoSize = true;
             lbl_UsoProcesador.Font = new Font("Segoe UI", 9F);
-            lbl_UsoProcesador.Location = new Point(214, 124);
+            lbl_UsoProcesador.Location = new Point(215, 125);
             lbl_UsoProcesador.Name = "lbl_UsoProcesador";
             lbl_UsoProcesador.Size = new Size(59, 25);
             lbl_UsoProcesador.TabIndex = 15;
@@ -865,7 +871,7 @@
             label5.AutoSize = true;
             label5.Font = new Font("Segoe UI", 9F, FontStyle.Bold);
             label5.ForeColor = Color.RoyalBlue;
-            label5.Location = new Point(21, 124);
+            label5.Location = new Point(22, 125);
             label5.Name = "label5";
             label5.Size = new Size(175, 25);
             label5.TabIndex = 14;
@@ -877,7 +883,7 @@
             label4.AutoSize = true;
             label4.Font = new Font("Segoe UI", 16F, FontStyle.Bold, GraphicsUnit.Point, 0);
             label4.ForeColor = Color.DarkBlue;
-            label4.Location = new Point(269, 37);
+            label4.Location = new Point(270, 38);
             label4.Name = "label4";
             label4.Size = new Size(348, 45);
             label4.TabIndex = 13;
@@ -919,30 +925,37 @@
             // btn_Limpiar
             // 
             btn_Limpiar.Anchor = AnchorStyles.None;
-            btn_Limpiar.Location = new Point(729, 175);
+            btn_Limpiar.Image = (Image)resources.GetObject("btn_Limpiar.Image");
+            btn_Limpiar.ImageAlign = ContentAlignment.TopCenter;
+            btn_Limpiar.Location = new Point(725, 159);
             btn_Limpiar.Name = "btn_Limpiar";
             btn_Limpiar.Padding = new Padding(0, 2, 0, 2);
-            btn_Limpiar.Size = new Size(133, 48);
+            btn_Limpiar.Size = new Size(133, 73);
             btn_Limpiar.TabIndex = 35;
             btn_Limpiar.Text = "Limpiar";
+            btn_Limpiar.TextAlign = ContentAlignment.BottomCenter;
             btn_Limpiar.UseVisualStyleBackColor = true;
             btn_Limpiar.Click += btn_Limpiar_Click;
             // 
             // btn_Simular
             // 
             btn_Simular.Anchor = AnchorStyles.None;
-            btn_Simular.Location = new Point(729, 268);
+            btn_Simular.Image = (Image)resources.GetObject("btn_Simular.Image");
+            btn_Simular.ImageAlign = ContentAlignment.TopCenter;
+            btn_Simular.Location = new Point(725, 252);
             btn_Simular.Name = "btn_Simular";
             btn_Simular.Padding = new Padding(0, 2, 0, 2);
-            btn_Simular.Size = new Size(133, 48);
+            btn_Simular.Size = new Size(133, 73);
             btn_Simular.TabIndex = 34;
             btn_Simular.Text = "Simular";
+            btn_Simular.TextAlign = ContentAlignment.BottomCenter;
             btn_Simular.UseVisualStyleBackColor = true;
             btn_Simular.Click += btn_Simular_Click;
             // 
             // np_MinTiempoLlegada
             // 
             np_MinTiempoLlegada.Anchor = AnchorStyles.None;
+            np_MinTiempoLlegada.BackColor = SystemColors.Window;
             np_MinTiempoLlegada.Location = new Point(379, 304);
             np_MinTiempoLlegada.Maximum = new decimal(new int[] { 20, 0, 0, 0 });
             np_MinTiempoLlegada.Name = "np_MinTiempoLlegada";
@@ -1593,6 +1606,7 @@
             AutoScaleMode = AutoScaleMode.Font;
             ClientSize = new Size(1959, 873);
             Controls.Add(tableLayoutPanel1);
+            MinimumSize = new Size(1918, 929);
             Name = "Form1";
             Text = "Planificador de procesos";
             Load += Form1_Load;
