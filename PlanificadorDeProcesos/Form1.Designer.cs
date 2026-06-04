@@ -129,13 +129,6 @@
             label32 = new Label();
             tableLayoutPanel5 = new TableLayoutPanel();
             Grid_Listo = new DataGridView();
-            ID = new DataGridViewTextBoxColumn();
-            TiempoLlegada = new DataGridViewTextBoxColumn();
-            BurstTime = new DataGridViewTextBoxColumn();
-            TiempoRestanteCPU = new DataGridViewTextBoxColumn();
-            IOBurstTime = new DataGridViewTextBoxColumn();
-            Prioridad = new DataGridViewTextBoxColumn();
-            Estado = new DataGridViewTextBoxColumn();
             panel2 = new Panel();
             label15 = new Label();
             panel4 = new Panel();
@@ -153,6 +146,13 @@
             label19 = new Label();
             toolTip = new ToolTip(components);
             timer = new System.Windows.Forms.Timer(components);
+            ID = new DataGridViewTextBoxColumn();
+            TiempoLlegada = new DataGridViewTextBoxColumn();
+            BurstTime = new DataGridViewTextBoxColumn();
+            TiempoRestanteCPU = new DataGridViewTextBoxColumn();
+            IOBurstTime = new DataGridViewTextBoxColumn();
+            Prioridad = new DataGridViewTextBoxColumn();
+            colEstado = new DataGridViewTextBoxColumn();
             tableLayoutPanel1.SuspendLayout();
             tableLayoutPanel2.SuspendLayout();
             pnl_Algoritmos.SuspendLayout();
@@ -1386,7 +1386,7 @@
             // 
             Grid_Listo.AutoSizeColumnsMode = DataGridViewAutoSizeColumnsMode.Fill;
             Grid_Listo.ColumnHeadersHeightSizeMode = DataGridViewColumnHeadersHeightSizeMode.AutoSize;
-            Grid_Listo.Columns.AddRange(new DataGridViewColumn[] { ID, TiempoLlegada, BurstTime, TiempoRestanteCPU, IOBurstTime, Prioridad, Estado });
+            Grid_Listo.Columns.AddRange(new DataGridViewColumn[] { ID, TiempoLlegada, BurstTime, TiempoRestanteCPU, IOBurstTime, Prioridad, colEstado });
             Grid_Listo.Dock = DockStyle.Fill;
             Grid_Listo.Location = new Point(3, 48);
             Grid_Listo.Name = "Grid_Listo";
@@ -1398,62 +1398,6 @@
             Grid_Listo.ShowRowErrors = false;
             Grid_Listo.Size = new Size(1014, 159);
             Grid_Listo.TabIndex = 3;
-            // 
-            // ID
-            // 
-            ID.DataPropertyName = "ID";
-            ID.HeaderText = "ID";
-            ID.MinimumWidth = 8;
-            ID.Name = "ID";
-            ID.ReadOnly = true;
-            // 
-            // TiempoLlegada
-            // 
-            TiempoLlegada.DataPropertyName = "TiempoLlegada";
-            TiempoLlegada.HeaderText = "Tiempo de llegada";
-            TiempoLlegada.MinimumWidth = 8;
-            TiempoLlegada.Name = "TiempoLlegada";
-            TiempoLlegada.ReadOnly = true;
-            // 
-            // BurstTime
-            // 
-            BurstTime.DataPropertyName = "BurstTime";
-            BurstTime.HeaderText = "Burst Time";
-            BurstTime.MinimumWidth = 8;
-            BurstTime.Name = "BurstTime";
-            BurstTime.ReadOnly = true;
-            // 
-            // TiempoRestanteCPU
-            // 
-            TiempoRestanteCPU.DataPropertyName = "TiempoRestanteCPU";
-            TiempoRestanteCPU.HeaderText = "Tiempo Restante CPU";
-            TiempoRestanteCPU.MinimumWidth = 8;
-            TiempoRestanteCPU.Name = "TiempoRestanteCPU";
-            TiempoRestanteCPU.ReadOnly = true;
-            // 
-            // IOBurstTime
-            // 
-            IOBurstTime.DataPropertyName = "IOBurstTime";
-            IOBurstTime.HeaderText = "IO Burst Time";
-            IOBurstTime.MinimumWidth = 8;
-            IOBurstTime.Name = "IOBurstTime";
-            IOBurstTime.ReadOnly = true;
-            // 
-            // Prioridad
-            // 
-            Prioridad.DataPropertyName = "Prioridad";
-            Prioridad.HeaderText = "Prioridad";
-            Prioridad.MinimumWidth = 8;
-            Prioridad.Name = "Prioridad";
-            Prioridad.ReadOnly = true;
-            // 
-            // Estado
-            // 
-            Estado.DataPropertyName = "Estado";
-            Estado.HeaderText = "Estado";
-            Estado.MinimumWidth = 8;
-            Estado.Name = "Estado";
-            Estado.ReadOnly = true;
             // 
             // panel2
             // 
@@ -1599,6 +1543,62 @@
             // timer
             // 
             timer.Tick += timer_Tick;
+            // 
+            // ID
+            // 
+            ID.DataPropertyName = "ID";
+            ID.HeaderText = "ID";
+            ID.MinimumWidth = 8;
+            ID.Name = "ID";
+            ID.ReadOnly = true;
+            // 
+            // TiempoLlegada
+            // 
+            TiempoLlegada.DataPropertyName = "TiempoLlegada";
+            TiempoLlegada.HeaderText = "Tiempo de llegada";
+            TiempoLlegada.MinimumWidth = 8;
+            TiempoLlegada.Name = "TiempoLlegada";
+            TiempoLlegada.ReadOnly = true;
+            // 
+            // BurstTime
+            // 
+            BurstTime.DataPropertyName = "BurstTime";
+            BurstTime.HeaderText = "Burst Time";
+            BurstTime.MinimumWidth = 8;
+            BurstTime.Name = "BurstTime";
+            BurstTime.ReadOnly = true;
+            // 
+            // TiempoRestanteCPU
+            // 
+            TiempoRestanteCPU.DataPropertyName = "TiempoRestanteCPU";
+            TiempoRestanteCPU.HeaderText = "Tiempo Restante CPU";
+            TiempoRestanteCPU.MinimumWidth = 8;
+            TiempoRestanteCPU.Name = "TiempoRestanteCPU";
+            TiempoRestanteCPU.ReadOnly = true;
+            // 
+            // IOBurstTime
+            // 
+            IOBurstTime.DataPropertyName = "IOBurstTime";
+            IOBurstTime.HeaderText = "IO Burst Time";
+            IOBurstTime.MinimumWidth = 8;
+            IOBurstTime.Name = "IOBurstTime";
+            IOBurstTime.ReadOnly = true;
+            // 
+            // Prioridad
+            // 
+            Prioridad.DataPropertyName = "Prioridad";
+            Prioridad.HeaderText = "Prioridad";
+            Prioridad.MinimumWidth = 8;
+            Prioridad.Name = "Prioridad";
+            Prioridad.ReadOnly = true;
+            // 
+            // colEstado
+            // 
+            colEstado.DataPropertyName = "Estado";
+            colEstado.HeaderText = "Estado";
+            colEstado.MinimumWidth = 8;
+            colEstado.Name = "colEstado";
+            colEstado.ReadOnly = true;
             // 
             // Form1
             // 
@@ -1777,6 +1777,6 @@
         private DataGridViewTextBoxColumn TiempoRestanteCPU;
         private DataGridViewTextBoxColumn IOBurstTime;
         private DataGridViewTextBoxColumn Prioridad;
-        private DataGridViewTextBoxColumn Estado;
+        private DataGridViewTextBoxColumn colEstado;
     }
 }

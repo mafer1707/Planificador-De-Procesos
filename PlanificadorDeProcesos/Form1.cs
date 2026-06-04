@@ -48,7 +48,7 @@ namespace PlanificadorDeProcesos
             pnl_Estadisticas.Visible = true;
             pnl_ProcesoActual.Visible = true;
 
-            ConfigurarGrid();
+            ConfigurarColumnasGrid();
 
             LimpiarTodo();
             CA.GenerarLote();
@@ -176,7 +176,7 @@ namespace PlanificadorDeProcesos
             CA.FormData.lbl_TiempoPromEjecucion = "0 ticks";
             CA.FormData.lbl_ProcesosPorPaso = 0;
         }
-        private void ConfigurarGrid()
+        private void ConfigurarColumnasGrid()
         {
             Grid_Nuevos.Columns["PrioridadNuevos"]!.Visible = rb_PrioridadesExpulsivo.Checked || rb_PrioridadesNoExpulsivo.Checked;
             Grid_Listo.Columns["Prioridad"]!.Visible = rb_PrioridadesExpulsivo.Checked || rb_PrioridadesNoExpulsivo.Checked;
@@ -231,7 +231,7 @@ namespace PlanificadorDeProcesos
             {
                 if (CA.ProcesosNuevos[i].TiempoLlegada == tickActual)
                 {
-                    CA.ProcesosNuevos[i].Estado = PlanificadorDeProcesos.Estado.Listo;
+                    CA.ProcesosNuevos[i].Estado = Estado.Listo;
                     CA.ProcesosListos.Add(CA.ProcesosNuevos[i]);
                     CA.ProcesosNuevos.RemoveAt(i);
                 }
@@ -245,7 +245,7 @@ namespace PlanificadorDeProcesos
 
                 if (p.TiempoRestanteIO == 0)
                 {
-                    p.Estado = PlanificadorDeProcesos.Estado.Listo;
+                    p.Estado = Estado.Listo;
                     CA.ProcesosListos.Add(p);
                     CA.ProcesosBloqueados.RemoveAt(i);
                 }
@@ -261,7 +261,7 @@ namespace PlanificadorDeProcesos
 
                     if (mejorEnCola.TiempoRestanteCPU < CA.ProcesoEnCPU.TiempoRestanteCPU)
                     {
-                        CA.ProcesoEnCPU.Estado = PlanificadorDeProcesos.Estado.Listo;
+                        CA.ProcesoEnCPU.Estado = Estado.Listo;
                         CA.ProcesosListos.Add(CA.ProcesoEnCPU);
                         CA.ProcesoEnCPU = null;
                     }
@@ -273,51 +273,10 @@ namespace PlanificadorDeProcesos
 
                     if (mejorEnCola.Prioridad < CA.ProcesoEnCPU.Prioridad)
                     {
-                        CA.ProcesoEnCPU.Estado = PlanificadorDeProcesos.Estado.Listo;
+                        CA.ProcesoEnCPU.Estado = Estado.Listo;
                         CA.ProcesosListos.Add(CA.ProcesoEnCPU);
                         CA.ProcesoEnCPU = null;
                     }
-                }
-            }
-
-            #endregion
-
-            #region Trabajo de la CPU
-
-            if (CA.ProcesoEnCPU != null)
-            {
-                CA.ProcesoEnCPU.TiempoRestanteCPU--;
-                ticksCPUOcupada++;
-
-                if (algoritmoSeleccionado == AlgoritmoPlanificacion.RoundRobin)
-                {
-                    quantumRestanteActual--;
-                }
-
-                int momentoDeIO = CA.ProcesoEnCPU.BurstTime / 2;
-                if (momentoDeIO == 0) momentoDeIO = 1;
-
-                if (CA.ProcesoEnCPU.IOBurstTime > 0 && !CA.ProcesoEnCPU.YaHizoIO && CA.ProcesoEnCPU.TiempoRestanteCPU == momentoDeIO)
-                {
-                    CA.ProcesoEnCPU.Estado = PlanificadorDeProcesos.Estado.Bloqueado;
-                    CA.ProcesosBloqueados.Add(CA.ProcesoEnCPU);
-                    CA.ProcesoEnCPU.YaHizoIO = true;
-                    CA.ProcesoEnCPU = null;
-                }
-
-                else if (CA.ProcesoEnCPU.TiempoRestanteCPU == 0)
-                {
-                    CA.ProcesoEnCPU.Estado = PlanificadorDeProcesos.Estado.Terminado;
-                    CA.ProcesoEnCPU.TickFinalizacion = tickActual;
-                    CA.ProcesosTerminados.Add(CA.ProcesoEnCPU);
-                    CA.ProcesoEnCPU = null;
-                }
-
-                else if (algoritmoSeleccionado == AlgoritmoPlanificacion.RoundRobin && quantumRestanteActual == 0)
-                {
-                    CA.ProcesoEnCPU.Estado = PlanificadorDeProcesos.Estado.Listo;
-                    CA.ProcesosListos.Add(CA.ProcesoEnCPU);
-                    CA.ProcesoEnCPU = null;
                 }
             }
 
@@ -372,12 +331,53 @@ namespace PlanificadorDeProcesos
                         break;
                 }
 
-                CA.ProcesoEnCPU.Estado = PlanificadorDeProcesos.Estado.Ejecutando;
+                CA.ProcesoEnCPU.Estado = Estado.Ejecutando;
 
             }
 
             #endregion
 
+            #region Trabajo de la CPU
+
+            if (CA.ProcesoEnCPU != null)
+            {
+                CA.ProcesoEnCPU.TiempoRestanteCPU--;
+                ticksCPUOcupada++;
+
+                if (algoritmoSeleccionado == AlgoritmoPlanificacion.RoundRobin)
+                {
+                    quantumRestanteActual--;
+                }
+
+                int momentoDeIO = CA.ProcesoEnCPU.BurstTime / 2;
+                if (momentoDeIO == 0) momentoDeIO = 1;
+
+                if (CA.ProcesoEnCPU.IOBurstTime > 0 && !CA.ProcesoEnCPU.YaHizoIO && CA.ProcesoEnCPU.TiempoRestanteCPU == momentoDeIO)
+                {
+                    CA.ProcesoEnCPU.Estado = Estado.Bloqueado;
+                    CA.ProcesosBloqueados.Add(CA.ProcesoEnCPU);
+                    CA.ProcesoEnCPU.YaHizoIO = true;
+                    CA.ProcesoEnCPU = null;
+                }
+
+                else if (CA.ProcesoEnCPU.TiempoRestanteCPU == 0)
+                {
+                    CA.ProcesoEnCPU.Estado = Estado.Terminado;
+                    CA.ProcesoEnCPU.TickFinalizacion = tickActual;
+                    CA.ProcesosTerminados.Add(CA.ProcesoEnCPU);
+                    CA.ProcesoEnCPU = null;
+                }
+
+                else if (algoritmoSeleccionado == AlgoritmoPlanificacion.RoundRobin && quantumRestanteActual == 0)
+                {
+                    CA.ProcesoEnCPU.Estado = Estado.Listo;
+                    CA.ProcesosListos.Add(CA.ProcesoEnCPU);
+                    CA.ProcesoEnCPU = null;
+                }
+            }
+
+            #endregion
+            
             foreach (var p in CA.ProcesosListos)
             {
                 p.TiempoEspera++;
@@ -388,16 +388,14 @@ namespace PlanificadorDeProcesos
                 bsProceso.DataSource = CA.ProcesoEnCPU;
             }
 
+            tickActual++;
+
             if (CA.ProcesoEnCPU == null && CA.ProcesosListos.Count == 0 && CA.ProcesosBloqueados.Count == 0 && CA.ProcesosNuevos.Count == 0)
             {
                 timer.Stop();
                 MessageBox.Show($"Simulación finalizada en tick {tickActual}", "Fin simulación", MessageBoxButtons.OK, MessageBoxIcon.Information);
 
                 CalcularEstadisticas();
-            }
-            else
-            {
-                tickActual++;
             }
         }
     }
